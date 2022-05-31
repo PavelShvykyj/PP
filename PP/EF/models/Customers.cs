@@ -1,10 +1,12 @@
-﻿namespace PP.EF.models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace PP.EF.models
 {
     public class Customers
     {
-        public int id{ get; set; }
-        public string Name { get; set; }
-
-
+        public ushort id { get; set; }
+        public string name { get; set; }
+        [EmailAddress]
+        public string email { get; set; }
     }
 }

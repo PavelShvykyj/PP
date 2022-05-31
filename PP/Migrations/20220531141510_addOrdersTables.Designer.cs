@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PP.EF;
 
@@ -11,9 +12,10 @@ using PP.EF;
 namespace PP.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20220531141510_addOrdersTables")]
+    partial class addOrdersTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -105,7 +107,7 @@ namespace PP.Migrations
 
                     b.HasIndex("orderid");
 
-                    b.ToTable("OrderRows", (string)null);
+                    b.ToTable("OrderRows");
                 });
 
             modelBuilder.Entity("PP.EF.models.Orders", b =>
@@ -126,7 +128,7 @@ namespace PP.Migrations
 
                     b.HasIndex("customerid");
 
-                    b.ToTable("Orders", (string)null);
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("PP.EF.models.OrderRows", b =>
