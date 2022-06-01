@@ -21,7 +21,8 @@ namespace PP.EF.modelsconfiguration
             builder
                 .HasOne(r => r.good)
                 .WithMany()
-                .HasForeignKey(r => r.goodid);
+                .HasForeignKey(r => r.goodid)
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder
                 .HasOne(r => r.order)
@@ -31,18 +32,22 @@ namespace PP.EF.modelsconfiguration
 
             builder
                 .Property(r => r.price)
-                .IsRequired()
+                .HasColumnType("decimal(15,4)")
                 .HasDefaultValue(0);
+                //.HasPrecision(4);
+
 
             builder
                 .Property(r => r.quantity)
-                .IsRequired()
+                .HasColumnType("decimal(15,4)")
                 .HasDefaultValue(0);
+                //.HasPrecision( 4);
+
 
             builder
                 .Property(r => r.summ)
-                .IsRequired()
-                .HasDefaultValue(0)
+                .HasColumnType("decimal(15,4)")
+                //.HasPrecision(4)
                 .HasComputedColumnSql("[quantity]*[price]");
         }
     }

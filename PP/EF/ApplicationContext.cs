@@ -25,6 +25,9 @@ namespace PP.EF
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             modelBuilder.ApplyConfiguration(new GoodsConfiguration());
             modelBuilder.ApplyConfiguration(new CustomersConfiguration());
+            modelBuilder.ApplyConfiguration(new OrderConfiguration());
+            modelBuilder.ApplyConfiguration(new OrderRowsConfiguration());
+
         }
     }
 }

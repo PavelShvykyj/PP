@@ -20,27 +20,26 @@ namespace PP.EF.modelsconfiguration
 
             builder
                 .HasIndex(o => o.customerid)
-                .IncludeProperties("id, summ");
+                .IncludeProperties(new[] { "id", "summ" } );
 
-            builder
-                .Property(o => o.customerid)
-                .IsRequired();
 
             builder
                 .HasOne(o => o.customer)
                 .WithMany()
                 .HasForeignKey(o => o.customerid)
-                .OnDelete(DeleteBehavior.SetNull);
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder
                 .Property(o => o.summ)
-                .IsRequired()
+                .HasColumnType("decimal(15,4)")
                 .HasDefaultValue(0);
                 // ??? .HasValueGenerator();
 
             builder
                 .HasMany(o => o.rows)
-                .WithOne(r => r.order);
+                .WithOne(r => r.order)
+                .OnDelete(DeleteBehavior.Cascade);
+            
         }
     }
 }

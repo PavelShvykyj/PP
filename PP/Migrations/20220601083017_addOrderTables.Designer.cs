@@ -12,8 +12,8 @@ using PP.EF;
 namespace PP.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20220531141510_addOrdersTables")]
-    partial class addOrdersTables
+    [Migration("20220601083017_addOrderTables")]
+    partial class addOrderTables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -86,6 +86,9 @@ namespace PP.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"), 1L, 1);
 
+                    b.Property<DateTime?>("Ordersid")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("goodid")
                         .HasColumnType("int");
 
@@ -93,27 +96,37 @@ namespace PP.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<decimal>("price")
-                        .HasColumnType("decimal(18,2)");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(15,4)")
+                        .HasDefaultValue(0m);
 
-                    b.Property<int>("quantity")
-                        .HasColumnType("int");
+                    b.Property<decimal>("quantity")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(15,4)")
+                        .HasDefaultValue(0m);
 
                     b.Property<decimal>("summ")
-                        .HasColumnType("decimal(18,2)");
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("decimal(15,4)")
+                        .HasComputedColumnSql("[quantity]*[price]");
 
                     b.HasKey("id");
+
+                    b.HasIndex("Ordersid");
 
                     b.HasIndex("goodid");
 
                     b.HasIndex("orderid");
 
-                    b.ToTable("OrderRows");
+                    b.ToTable("o_rows", (string)null);
                 });
 
             modelBuilder.Entity("PP.EF.models.Orders", b =>
                 {
                     b.Property<DateTime>("id")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<string>("comment")
                         .HasColumnType("nvarchar(max)");
@@ -122,25 +135,35 @@ namespace PP.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("summ")
-                        .HasColumnType("decimal(18,2)");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(15,4)")
+                        .HasDefaultValue(0m);
 
                     b.HasKey("id");
 
+                    SqlServerKeyBuilderExtensions.IsClustered(b.HasKey("id"));
+
                     b.HasIndex("customerid");
 
-                    b.ToTable("Orders");
+                    SqlServerIndexBuilderExtensions.IncludeProperties(b.HasIndex("customerid"), new[] { "id", "summ" });
+
+                    b.ToTable("orders", (string)null);
                 });
 
             modelBuilder.Entity("PP.EF.models.OrderRows", b =>
                 {
+                    b.HasOne("PP.EF.models.Orders", null)
+                        .WithMany("rows")
+                        .HasForeignKey("Ordersid");
+
                     b.HasOne("PP.EF.models.Goods", "good")
                         .WithMany()
                         .HasForeignKey("goodid")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("PP.EF.models.Orders", "order")
-                        .WithMany("rows")
+                        .WithMany()
                         .HasForeignKey("orderid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -155,7 +178,7 @@ namespace PP.Migrations
                     b.HasOne("PP.EF.models.Customers", "customer")
                         .WithMany()
                         .HasForeignKey("customerid")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("customer");

@@ -9,9 +9,8 @@ namespace PP.EF.models
         public Orders order { get; set; }
         public ushort goodid { get; set; }
         public Goods good { get; set; }
-        [Range(0, System.Double.MaxValue)]
         public decimal price { get; set; }
         public decimal summ { get; set; }
-        public ushort quantity { get; set; }
+        public decimal quantity { get; set; }
     }
 }
