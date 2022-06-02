@@ -1,6 +1,8 @@
 
 
 using Microsoft.EntityFrameworkCore;
+using PP.API_Resourses;
+using PP.DTO;
 using PP.EF;
 using PP.Fake;
 
@@ -11,7 +13,7 @@ Console.WriteLine(connection);
 builder.Services.AddControllers();
 builder.Services.AddSingleton<ActionsResultFake>();
 builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connection));
-
+builder.Services.AddAutoMapper(new[] { typeof(DTOMappingProfile), typeof(ResourceMappingProfile) } );
 
 var app = builder.Build();
 app.Use(
@@ -24,6 +26,4 @@ app.Use(
 
 app.MapControllers();
 app.MapGet("/", () => "Hello World!");
-
-
 app.Run();

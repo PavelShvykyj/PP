@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using PP.EF;
 using PP.Fake;
 
 namespace PP.Controllers
@@ -7,11 +9,14 @@ namespace PP.Controllers
     public class OrdersController : Controller
     {
         private ActionsResultFake _af;
+        private readonly IMapper _mapper;
+        readonly ApplicationContext _db;
 
-        public OrdersController(ActionsResultFake af)
+        public OrdersController(ActionsResultFake af, IMapper mapper, ApplicationContext context)
         {
             _af = af;
-
+            _mapper = mapper;
+            _db = context;
         }
 
 

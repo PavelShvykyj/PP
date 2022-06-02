@@ -1,31 +1,64 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using PP.API_Resourses;
+using PP.EF;
+using PP.EF.models;
 using PP.Fake;
 
 namespace PP.Controllers
 {
+    [ApiController]
     [Route("API/[Controller]/[Action]")]
-    public class CustomersController : Controller
+    public class CustomersController : ControllerBase
     {
         private ActionsResultFake _af;
-
-        public CustomersController(ActionsResultFake af)
+        private readonly IMapper _mapper;
+        private readonly ApplicationContext _db;
+        public CustomersController(ActionsResultFake af , IMapper mapper, ApplicationContext context)
         {
             _af = af;
-            
+            _mapper = mapper;
+            _db = context;
         }
         
         [HttpPost]
-        public IActionResult Create()
+        public async Task<IActionResult> Create(CustomerResource CustomerResource)
         {
+            if (!ModelState.IsValid )
+            {
+                return BadRequest();
+            }
 
-            return Json("Ok Create");
+            if (_db.Customers.Where(c => c.email == CustomerResource.email).Count() != 0) 
+            {
+                return Ok("Exists already");
+            }
+
+            Customers newCustomer = _mapper.Map<CustomerResource, Customers>(CustomerResource);
+            _db.Customers.Add(newCustomer);
+            await _db.SaveChangesAsync();
+            return Ok(_mapper.Map<Customers, CustomersDTO>(newCustomer));
         }
 
         [HttpPost]
         [Route("{id:int}")]
-        public IActionResult Update(int id)
+        public async Task<IActionResult> Update(int id, CustomerResource CustomerResource)
         {
-            return _af.GetResoult(RouteData);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var Customer = _db.Customers.SingleOrDefault(g => g.id == id);
+            if (Customer is null)
+            {
+                return BadRequest();
+            }
+            _mapper.Map<CustomerResource, Customers>(CustomerResource, Customer);
+            await _db.SaveChangesAsync();
+
+            return Ok(_mapper.Map<Customers, CustomersDTO>(Customer));
+            //return _af.GetResoult(RouteData);
         }
 
         [HttpGet]

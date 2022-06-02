@@ -2,7 +2,7 @@
 
 namespace PP.EF.models
 {
-    public class Goods
+    public class GoodsDTO
     {
         public ushort id { get; set; }
         public string name { get; set; }

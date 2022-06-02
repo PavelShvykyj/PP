@@ -11,23 +11,21 @@ namespace PP.EF
         public DbSet<Orders> Orders { get; set; }
         public DbSet<OrderRows> OrderRows { get; set; }
 
-
         public ApplicationContext(DbContextOptions<ApplicationContext> options)
             :base(options)
         {
             Database.EnsureCreated();
+            //Database.Migrate();
         }
 
         protected  override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
-            optionsBuilder.UseSqlServer("Server =.\\SQLEXPRESS; Database = PetProj; User Id=sa;Password=123;MultipleActiveResultSets=true");
+            optionsBuilder.UseSqlServer("Server=db;Database=PetProj;User Id=sa;Password=Mylocalhost88!;MultipleActiveResultSets=true");
         }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             modelBuilder.ApplyConfiguration(new GoodsConfiguration());
             modelBuilder.ApplyConfiguration(new CustomersConfiguration());
             modelBuilder.ApplyConfiguration(new OrderConfiguration());
             modelBuilder.ApplyConfiguration(new OrderRowsConfiguration());
-
         }
     }
 }
