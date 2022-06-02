@@ -2,16 +2,13 @@
 
 namespace PP.API_Resourses
 {
-    public class GoodResource
+    public class GoodSetRestResouce
     {
         [Required]
-        [MaxLength(100)]
-        public string name { get; set; }
         [Range(0, System.Int16.MaxValue)]
-        [Required]
         public ushort rest { get; set; }
         [Required]
-        [Range(0, System.Double.MaxValue)]
-        public decimal price { get; set; }
+        [Range(0, System.Int16.MaxValue)]
+        public ushort id { get; set; }
     }
 }

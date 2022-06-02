@@ -12,6 +12,14 @@ namespace PP.API_Resourses
 
             CreateMap<GoodResource, Goods>()
                 .ForMember(c => c.id, x => x.Ignore());
+
+            CreateMap<GoodSetRestResouce, Goods>()
+                .BeforeMap((r, g) => { g.rest = r.rest; g.id = r.id; } )
+                .ForAllMembers(x => x.Ignore());
+
+            CreateMap<GoodSetPriceResouce, Goods>()
+                .BeforeMap((r, g) => { g.price = r.price; g.id = r.id; })
+                .ForAllMembers(x => x.Ignore());
         }
     }
 }

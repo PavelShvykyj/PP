@@ -65,11 +65,16 @@ namespace PP.Controllers
         [Route("{skip:int}/{take:int:max(100)}")]
         public IActionResult GetList(int skip, int take)
         {
-            return _af.GetResoult(RouteData, new {  take,  skip, dev = ControllerContext.HttpContext.Items["IsDevelopment"] });
+            Customers[] customers =  _db.Customers
+                .OrderBy(c=> c.email)
+                .Skip(skip)
+                .Take(take)
+                .ToArray();
             
+            CustomersDTO[] customersDTOs = _mapper.Map<Customers[], CustomersDTO[]>(customers);
+            
+            return Ok(customersDTOs);
+            //return _af.GetResoult(RouteData, new {  take,  skip, dev = ControllerContext.HttpContext.Items["IsDevelopment"] });
         }
-
-
-
     }
 }

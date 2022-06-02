@@ -64,8 +64,30 @@ namespace PP.Controllers
             Good.rest = rest;
             await _db.SaveChangesAsync();
             return Ok();
-
             //return _af.GetResoult(RouteData, new { id,  rest, dev = ControllerContext.HttpContext.Items["IsDevelopment"] } );
+        }
+        [HttpPost]
+        public async Task<IActionResult> SetRestToMany(GoodSetRestResouce[] GoodResouce) 
+        {
+            Goods[] goods = _mapper.Map<GoodSetRestResouce[], Goods[]>(GoodResouce);
+            foreach (Goods item in goods)
+            {
+                _db.Goods.Attach(item).Property(g=>g.rest).IsModified = true;
+            }
+            await _db.SaveChangesAsync();
+            return Ok();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SetPriceToMany(GoodSetPriceResouce[] GoodResouce)
+        {
+            Goods[] goods = _mapper.Map<GoodSetPriceResouce[], Goods[]>(GoodResouce);
+            foreach (Goods item in goods)
+            {
+                _db.Goods.Attach(item).Property(g => g.price).IsModified = true;
+            }
+            await _db.SaveChangesAsync();
+            return Ok();
         }
 
         [HttpPost]
@@ -82,9 +104,9 @@ namespace PP.Controllers
             {
                 return BadRequest();
             }
+            
             _mapper.Map<GoodResource, Goods>(GoodResource, Good);
             await _db.SaveChangesAsync();
-
             return Ok(_mapper.Map<Goods, GoodsDTO>( Good));
             //return _af.GetResoult(RouteData, new {  dev = ControllerContext.HttpContext.Items["IsDevelopment"] });
         }
@@ -93,9 +115,14 @@ namespace PP.Controllers
         [Route("{skip:int}/{take:int:max(100)}")]
         public IActionResult GetList(int skip, int take)
         {
-            return _af.GetResoult(RouteData, new { skip, take, dev = ControllerContext.HttpContext.Items["IsDevelopment"] });
+            Goods[] goods = _db.Goods
+                .Skip(skip)
+                .Take(take)
+                .ToArray();
+            GoodsDTO[] goodsDTOs = _mapper.Map<Goods[], GoodsDTO[]>(goods);
+            return Ok(goods);
+
+            //return _af.GetResoult(RouteData, new { skip, take, dev = ControllerContext.HttpContext.Items["IsDevelopment"] });
         }
-
-
     }
 }
