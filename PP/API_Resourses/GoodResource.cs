@@ -8,9 +8,9 @@ namespace PP.API_Resourses
         [MaxLength(100)]
         public string name { get; set; }
         [Range(0, System.Int16.MaxValue)]
-        [Required]
+        
         public ushort rest { get; set; }
-        [Required]
+        
         [Range(0, System.Double.MaxValue)]
         public decimal price { get; set; }
     }
