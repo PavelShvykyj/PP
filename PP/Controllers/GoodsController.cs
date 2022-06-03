@@ -5,6 +5,7 @@ using AutoMapper;
 using PP.EF;
 using PP.API_Resourses;
 using PP.EF.models;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace PP.Controllers
 {
@@ -90,22 +91,31 @@ namespace PP.Controllers
             return Ok();
         }
 
-        [HttpPost]
+        [HttpPatch]
         [Route("{id:int}")]
-        public async Task<IActionResult> Update(ushort id, GoodResource GoodResource)
+        public async Task<IActionResult> Update(ushort id, JsonPatchDocument<Goods> GoodResource)
         {
-            if (!ModelState.IsValid)
+            if (GoodResource == null)
             {
-                return BadRequest();
+                return BadRequest("No data to patch");
             }
 
+
             var Good = _db.Goods.SingleOrDefault(g => g.id == id);
+            
             if (Good is null)
             {
-                return BadRequest();
+                NotFound(new { Message = $"Item with id {id} does not exist." });
             }
-            
-            _mapper.Map<GoodResource, Goods>(GoodResource, Good);
+
+            GoodResource.ApplyTo(Good, ModelState);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            //_mapper.Map<GoodResource, Goods>(GoodResource, Good);
             await _db.SaveChangesAsync();
             return Ok(_mapper.Map<Goods, GoodsDTO>( Good));
             //return _af.GetResoult(RouteData, new {  dev = ControllerContext.HttpContext.Items["IsDevelopment"] });
