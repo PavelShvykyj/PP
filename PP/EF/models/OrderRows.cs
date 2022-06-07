@@ -5,7 +5,7 @@ namespace PP.EF.models
     public class OrderRows
     {
         public int id { get; set; }
-        public DateTime orderid { get; set; }
+        public int orderid { get; set; }
         public Orders order { get; set; }
         public ushort goodid { get; set; }
         public Goods good { get; set; }

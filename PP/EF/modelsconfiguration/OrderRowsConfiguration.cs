@@ -12,7 +12,7 @@ namespace PP.EF.modelsconfiguration
             
             builder.HasKey(r => r.id);
 
-            builder.HasIndex(r => r.orderid);
+            //builder.HasIndex(r => r.orderid);
 
             builder
                 .Property(r => r.goodid)
@@ -24,11 +24,11 @@ namespace PP.EF.modelsconfiguration
                 .HasForeignKey(r => r.goodid)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder
-                .HasOne(r => r.order)
-                .WithMany()
-                .HasForeignKey(r => r.orderid)
-                .OnDelete(DeleteBehavior.Cascade);
+            //builder
+            //    .HasOne(r => r.order)
+            //    .WithMany()
+            //    .HasForeignKey(r => r.orderid)
+            //    .OnDelete(DeleteBehavior.Cascade);
 
             builder
                 .Property(r => r.price)
@@ -42,6 +42,7 @@ namespace PP.EF.modelsconfiguration
                 .HasColumnType("decimal(15,4)")
                 .HasDefaultValue(0);
                 //.HasPrecision( 4);
+
 
 
             builder

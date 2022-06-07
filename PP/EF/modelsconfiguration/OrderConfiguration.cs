@@ -14,9 +14,9 @@ namespace PP.EF.modelsconfiguration
                 .HasKey(o => o.id)
                 .IsClustered();
 
-            builder
-                .Property(o => o.id)
-                .HasDefaultValueSql("GETDATE()");
+            //builder
+            //    .Property(o => o.id)
+            //    .HasDefaultValueSql("GETDATE()");
 
             builder
                 .HasIndex(o => o.customerid)
@@ -33,13 +33,15 @@ namespace PP.EF.modelsconfiguration
                 .Property(o => o.summ)
                 .HasColumnType("decimal(15,4)")
                 .HasDefaultValue(0);
-                // ??? .HasValueGenerator();
+            // ??? .HasValueGenerator();
+
 
             builder
                 .HasMany(o => o.rows)
                 .WithOne(r => r.order)
+                .HasForeignKey(r=>r.orderid)
                 .OnDelete(DeleteBehavior.Cascade);
-            
+
         }
     }
 }

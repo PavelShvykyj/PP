@@ -2,7 +2,7 @@
 {
     public class OrdersDTO
     {
-        public DateTime id { get; set; }
+        public int id { get; set; }
         public decimal summ { get; set; }
         public ushort customerid { get; set; }
         public CustomersDTO customer { get; set; }

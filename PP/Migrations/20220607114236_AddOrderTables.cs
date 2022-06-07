@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace PP.Migrations
 {
-    public partial class addOrderTables : Migration
+    public partial class AddOrderTables : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,7 +13,8 @@ namespace PP.Migrations
                 name: "orders",
                 columns: table => new
                 {
-                    id = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     summ = table.Column<decimal>(type: "decimal(15,4)", nullable: false, defaultValue: 0m),
                     customerid = table.Column<int>(type: "int", nullable: false),
                     comment = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -36,12 +37,11 @@ namespace PP.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    orderid = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    orderid = table.Column<int>(type: "int", nullable: false),
                     goodid = table.Column<int>(type: "int", nullable: false),
                     price = table.Column<decimal>(type: "decimal(15,4)", nullable: false, defaultValue: 0m),
                     summ = table.Column<decimal>(type: "decimal(15,4)", nullable: false, computedColumnSql: "[quantity]*[price]"),
-                    quantity = table.Column<decimal>(type: "decimal(15,4)", nullable: false, defaultValue: 0m),
-                    Ordersid = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    quantity = table.Column<decimal>(type: "decimal(15,4)", nullable: false, defaultValue: 0m)
                 },
                 constraints: table =>
                 {
@@ -58,11 +58,6 @@ namespace PP.Migrations
                         principalTable: "orders",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_o_rows_orders_Ordersid",
-                        column: x => x.Ordersid,
-                        principalTable: "orders",
-                        principalColumn: "id");
                 });
 
             migrationBuilder.CreateIndex(
@@ -74,11 +69,6 @@ namespace PP.Migrations
                 name: "IX_o_rows_orderid",
                 table: "o_rows",
                 column: "orderid");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_o_rows_Ordersid",
-                table: "o_rows",
-                column: "Ordersid");
 
             migrationBuilder.CreateIndex(
                 name: "IX_orders_customerid",
