@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using PP.EF.Models;
 
-namespace PP.API_Resourses
+namespace PP.APIResourses
 {
     public static class ObjHelper {
         public static string[] GetPropNames<T>(T parametr) where T : class

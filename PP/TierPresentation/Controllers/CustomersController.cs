@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using PP.API_Resourses;
+using PP.APIResourses;
 using PP.EF;
 using PP.EF.Models;
 using PP.Fake;

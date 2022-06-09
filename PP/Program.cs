@@ -1,7 +1,7 @@
 
 
 using Microsoft.EntityFrameworkCore;
-using PP.API_Resourses;
+using PP.APIResourses;
 using PP.DTO;
 using PP.EF;
 using PP.Fake;

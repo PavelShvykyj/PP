@@ -1,7 +1,7 @@
-﻿using AutoMapper;
+﻿ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using PP.API_Resourses;
+using PP.APIResourses;
 using PP.EF;
 using PP.EF.Models;
 using PP.Fake;
