@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PP.API_Resourses;
 using PP.EF;
-using PP.EF.models;
+using PP.EF.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -29,11 +29,11 @@ namespace PP.Controllers
             
             for (int i = 0; i < count; i++)
             {
-                GoodsToAdd.Add(new GoodResource { name = "Good " + i.ToString() });
+                GoodsToAdd.Add(new GoodResource { Name = "Good " + i.ToString() });
             }
             _db.Goods
                 .AddRange(
-                _mapper.Map<List<GoodResource>, List<Goods>>(GoodsToAdd)
+                _mapper.Map<List<GoodResource>, List<Good>>(GoodsToAdd)
                 .ToArray());
 
             await _db.SaveChangesAsync();
@@ -57,13 +57,13 @@ namespace PP.Controllers
             for (int i = 0; i < count; i++)
             {
                 CustomersToAdd.Add(new CustomerResource 
-                { name = "Customer " + i.ToString(),
-                  email = "Customer_" + i.ToString()+ "@.gmail.com"
+                { Name = "Customer " + i.ToString(),
+                  Email = "Customer_" + i.ToString()+ "@.gmail.com"
                 });
             }
             _db.Customers
                 .AddRange(
-                _mapper.Map<List<CustomerResource>, List<Customers>>(CustomersToAdd)
+                _mapper.Map<List<CustomerResource>, List<Customer>>(CustomersToAdd)
                 .ToArray());
 
             await _db.SaveChangesAsync();

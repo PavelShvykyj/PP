@@ -1,14 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PP.EF.models;
-using PP.EF.modelsconfiguration;
+using PP.EF.Models;
+using PP.EF.Modelsconfiguration;
 
 namespace PP.EF
 {
     public class ApplicationContext : DbContext
     {
-        public DbSet<Goods> Goods { get; set; }
-        public DbSet<Customers> Customers { get; set; }
-        public DbSet<Orders> Orders { get; set; }
+        public DbSet<Good> Goods { get; set; }
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Order> Orders { get; set; }
         public DbSet<OrderRows> OrderRows { get; set; }
 
         public ApplicationContext(DbContextOptions<ApplicationContext> options)
@@ -23,8 +23,8 @@ namespace PP.EF
             //optionsBuilder.UseSqlServer("Server=localhost\\SQLEXPRESS;Database=PetProj;User Id=sa;Password=123;MultipleActiveResultSets=true");
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
-            modelBuilder.ApplyConfiguration(new GoodsConfiguration());
-            modelBuilder.ApplyConfiguration(new CustomersConfiguration());
+            modelBuilder.ApplyConfiguration(new GoodConfiguration());
+            modelBuilder.ApplyConfiguration(new CustomerConfiguration());
             modelBuilder.ApplyConfiguration(new OrderConfiguration());
             modelBuilder.ApplyConfiguration(new OrderRowsConfiguration());
             

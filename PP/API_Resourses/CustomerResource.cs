@@ -6,9 +6,9 @@ namespace PP.API_Resourses
     {
             [Required]
             [MaxLength(100)]
-            public string name { get; set; }
+            public string Name { get; set; }
             [EmailAddress]
             [Required]
-            public string email { get; set; } = null!;
+            public string Email { get; set; } = null!;
     }
 }

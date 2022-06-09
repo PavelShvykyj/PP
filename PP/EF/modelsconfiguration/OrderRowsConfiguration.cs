@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PP.EF.models;
+using PP.EF.Models;
 
-namespace PP.EF.modelsconfiguration
+namespace PP.EF.Modelsconfiguration
 {
     public class OrderRowsConfiguration : IEntityTypeConfiguration<OrderRows>
     {
@@ -10,46 +10,43 @@ namespace PP.EF.modelsconfiguration
 
             builder.ToTable("o_rows");
             
-            builder.HasKey(r => r.id);
+            builder.HasKey(r => r.Id);
 
-            //builder.HasIndex(r => r.orderid);
+            //builder.HasIndex(r => r.OrderId);
 
             builder
-                .Property(r => r.goodid)
+                .Property(r => r.GoodId)
                 .IsRequired();
             
             builder
-                .HasOne(r => r.good)
+                .HasOne(r => r.Good)
                 .WithMany()
-                .HasForeignKey(r => r.goodid)
+                .HasForeignKey(r => r.GoodId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             //builder
-            //    .HasOne(r => r.order)
+            //    .HasOne(r => r.Order)
             //    .WithMany()
-            //    .HasForeignKey(r => r.orderid)
+            //    .HasForeignKey(r => r.OrderId)
             //    .OnDelete(DeleteBehavior.Cascade);
 
             builder
-                .Property(r => r.price)
+                .Property(r => r.Price)
                 .HasColumnType("decimal(15,4)")
                 .HasDefaultValue(0);
                 //.HasPrecision(4);
 
-
             builder
-                .Property(r => r.quantity)
+                .Property(r => r.Quantity)
                 .HasColumnType("decimal(15,4)")
                 .HasDefaultValue(0);
                 //.HasPrecision( 4);
 
-
-
             builder
-                .Property(r => r.summ)
+                .Property(r => r.Summ)
                 .HasColumnType("decimal(15,4)")
                 //.HasPrecision(4)
-                .HasComputedColumnSql("[quantity]*[price]");
+                .HasComputedColumnSql("[Quantity]*[Price]");
         }
     }
 }

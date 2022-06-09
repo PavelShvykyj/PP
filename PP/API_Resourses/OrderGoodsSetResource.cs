@@ -1,15 +1,16 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace PP.EF.Models
+namespace PP.API_Resourses
 {
-    public class OrderRowsDTO
+    public class OrderGoodsSetResource
     {
-        public int Id { get; set; }
         public int OrderId { get; set; }
-        public GoodDTO Good { get; set; }
+        [Required]
         public ushort GoodId { get; set; }
+        [Required]
         public decimal Price { get; set; }
-        public decimal Summ { get; set; }
+        [Required]
+        [Range(0.1, System.Double.MaxValue)]
         public decimal Quantity { get; set; }
     }
 }

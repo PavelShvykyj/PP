@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using PP.EF.models;
+using PP.EF.Models;
 
 namespace PP.DTO
 {
@@ -7,20 +7,20 @@ namespace PP.DTO
     {
         public DTOMappingProfile()
         {
-            CreateMap<Customers, CustomersDTO>();
-            CreateMap<Goods, GoodsDTO>();
+            CreateMap<Customer, CustomerDTO>();
+            CreateMap<Good, GoodDTO>();
             CreateMap<OrderRows, OrderRowsDTO>();
             
             
-            CreateMap<Orders, OrdersDTO>()
-                .ForMember(o=>o.rows, d=>d.MapFrom(o=>o.rows.ToList()
+            CreateMap<Order, OrderDTO>()
+                .ForMember(o=>o.Goods, d=>d.MapFrom(o=>o.Goods.ToList()
                     ));
 
 
 
-            CreateMap<Orders, OrdersListDTO>()
-                .ForMember(o => o.customername,
-                           d => d.MapFrom(o => o.customer.name)
+            CreateMap<Order, OrdersListDTO>()
+                .ForMember(o => o.CustomerName,
+                           d => d.MapFrom(o => o.Customer.Name)
                 );
 
 

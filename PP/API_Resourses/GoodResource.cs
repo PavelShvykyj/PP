@@ -6,12 +6,12 @@ namespace PP.API_Resourses
     {
         [Required]
         [MaxLength(100)]
-        public string name { get; set; }
+        public string Name { get; set; }
         [Range(0, System.Int16.MaxValue)]
         
-        public ushort rest { get; set; }
+        public ushort Rest { get; set; }
         
         [Range(0, System.Double.MaxValue)]
-        public decimal price { get; set; }
+        public decimal Price { get; set; }
     }
 }

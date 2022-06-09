@@ -5,9 +5,9 @@ namespace PP.API_Resourses
     public class OrderSetResource
     {
         [Required]
-        public ushort customerid { get; set; }
-        public string? comment { get; set; }
+        public ushort CustomerId { get; set; }
+        public string? Comment { get; set; }
         [Required]
-        public ICollection<OrderRowsSetResource> rows { get; set; }
+        public ICollection<OrderGoodsSetResource> Goods { get; set; }
     }
 }

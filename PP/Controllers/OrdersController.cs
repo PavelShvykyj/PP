@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PP.API_Resourses;
 using PP.EF;
-using PP.EF.models;
+using PP.EF.Models;
 using PP.Fake;
 
 namespace PP.Controllers
@@ -30,29 +30,29 @@ namespace PP.Controllers
          
             /// check for existing entities by foreing keys
             
-            Orders Order = new Orders();
-            _mapper.Map<OrderSetResource, Orders>(orderdata, Order);
-            Order.rows.Clear();
+            Order order = new Order();
+            _mapper.Map<OrderSetResource, Order>(orderdata, order);
+            order.Goods.Clear();
 
-            _db.Orders.Add(Order);
+            _db.Orders.Add(order);
             await _db.SaveChangesAsync();
 
-            _= orderdata.rows.Select(r => { r.orderid = Order.id; return r; }).ToList();
+            _= orderdata.Goods.Select(r => { r.OrderId = order.Id; return r; }).ToList();
 
-            OrderRows[] orows = _mapper.Map<OrderRowsSetResource[], OrderRows[]>(orderdata.rows.ToArray());
-            _db.OrderRows.AddRange(orows);
+            OrderRows[] orderGoods = _mapper.Map<OrderGoodsSetResource[], OrderRows[]>(orderdata.Goods.ToArray());
+            _db.OrderRows.AddRange(orderGoods);
             await _db.SaveChangesAsync();
 
-            Order = _db.Orders.Include(c => c.customer)
-                              .Include(c => c.rows)
-                              .ThenInclude(r => r.good)
-                              .Single(o => o.id == Order.id);
+            order = _db.Orders.Include(c => c.Customer)
+                              .Include(c => c.Goods)
+                              .ThenInclude(r => r.Good)
+                              .Single(o => o.Id == order.Id);
 
-            return Ok(_mapper.Map<Orders,OrdersDTO>(Order));
+            return Ok(_mapper.Map<Order,OrderDTO>(order));
         }
 
         [HttpPut]
-        [Route("{id:int}")]
+        [Route("{Id:int}")]
         public async Task<IActionResult> Update(OrderSetResource orderdata, int id)
         {
             if (!ModelState.IsValid)
@@ -60,22 +60,22 @@ namespace PP.Controllers
                 return BadRequest(ModelState);
             }
 
-            Orders Order = _db.Orders.Include(c => c.customer)
-                              .Include(c => c.rows)
-                              .ThenInclude(r => r.good)
-                              .SingleOrDefault(o => o.id == id)!;
+            Order order = _db.Orders.Include(c => c.Customer)
+                              .Include(c => c.Goods)
+                              .ThenInclude(r => r.Good)
+                              .SingleOrDefault(o => o.Id == id)!;
 
-            if (Order is null)
+            if (order is null)
             {
-                NotFound(new { Message = $"Item with id {id} does not exist." });
+                NotFound(new { Message = $"Item with Id {id} does not exist." });
             }
  
-            _mapper.Map<OrderSetResource, Orders>(orderdata, Order);
-            _db.Orders.Update(Order);
+            _mapper.Map<OrderSetResource, Order>(orderdata, order);
+            _db.Orders.Update(order);
 
             await _db.SaveChangesAsync();
 
-            return Ok(_mapper.Map<Orders, OrdersDTO>(Order));
+            return Ok(_mapper.Map<Order, OrderDTO>(order));
         }
 
 
@@ -85,11 +85,11 @@ namespace PP.Controllers
         public IActionResult GetList(int skip, int take)
         {
             var res = _db.Orders
-                            .Include(o => o.customer)
-                            .OrderBy(o=>o.customerid)
+                            .Include(o => o.Customer)
+                            .OrderBy(o=>o.CustomerId)
                             .Skip(skip)  
                             .Take(take)
-                            .Select(o => new {id = o.id, summ = o.summ, customer = o.customer  })
+                            .Select(o => new {id = o.Id, summ = o.Summ, customer = o.Customer  })
                             .ToList();
 
 
@@ -99,14 +99,14 @@ namespace PP.Controllers
         }
 
         [HttpPost]
-        [Route("{id:int}")]
+        [Route("{Id:int}")]
         public IActionResult Pay()
         {
             return _af.GetResoult(RouteData, new { dev = ControllerContext.HttpContext.Items["IsDevelopment"] });
         }
 
         [HttpPost]
-        [Route("{id:int}")]
+        [Route("{Id:int}")]
         public IActionResult Cancel()
         {
             return _af.GetResoult(RouteData, new { dev = ControllerContext.HttpContext.Items["IsDevelopment"] });

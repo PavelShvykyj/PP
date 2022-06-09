@@ -4,7 +4,7 @@ using PP.Fake;
 using AutoMapper;
 using PP.EF;
 using PP.API_Resourses;
-using PP.EF.models;
+using PP.EF.Models;
 using Microsoft.AspNetCore.JsonPatch;
 
 namespace PP.Controllers
@@ -25,99 +25,99 @@ namespace PP.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(GoodResource GoodResource)
+        public async Task<IActionResult> Create(GoodResource goodResource)
         {
             if (!ModelState.IsValid) 
             {
                 return BadRequest();
             }
 
-            Goods newGood = _mapper.Map<GoodResource, Goods>(GoodResource);
+            Good newGood = _mapper.Map<GoodResource, Good>(goodResource);
             _db.Goods.Add(newGood);
             await _db.SaveChangesAsync();
-            return Ok(_mapper.Map<Goods, GoodsDTO>(newGood));
+            return Ok(_mapper.Map<Good, GoodDTO>(newGood));
         }
 
         [HttpPost]
-        [Route("{id:int}/{price:decimal}")]
+        [Route("{Id:int}/{Price:decimal}")]
         public async Task<IActionResult> SetPrice(ushort id, decimal price)
         {
-            var Good = _db.Goods.SingleOrDefault(g => g.id == id);
+            var Good = _db.Goods.SingleOrDefault(g => g.Id == id);
             if (Good is null)
             {
                 return BadRequest();
             }
-            Good.price = price;
+            Good.Price = price;
             await _db.SaveChangesAsync();
             return Ok();
-            //return _af.GetResoult(RouteData, new { id,  price , dev = ControllerContext.HttpContext.Items["IsDevelopment"] } );
+            //return _af.GetResoult(RouteData, new { Id,  Price , dev = ControllerContext.HttpContext.Items["IsDevelopment"] } );
         }
 
         [HttpPost]
-        [Route("{id:int}/{rest:int}")]
+        [Route("{Id:int}/{Rest:int}")]
         public async Task<IActionResult> SetRest(ushort id, ushort rest)
         {
-            var Good = _db.Goods.SingleOrDefault(g => g.id == id);
+            var Good = _db.Goods.SingleOrDefault(g => g.Id == id);
             if (Good is null)
             {
                 return BadRequest();
             }
-            Good.rest = rest;
+            Good.Rest = rest;
             await _db.SaveChangesAsync();
             return Ok();
-            //return _af.GetResoult(RouteData, new { id,  rest, dev = ControllerContext.HttpContext.Items["IsDevelopment"] } );
+            //return _af.GetResoult(RouteData, new { Id,  Rest, dev = ControllerContext.HttpContext.Items["IsDevelopment"] } );
         }
         [HttpPost]
-        public async Task<IActionResult> SetRestToMany(GoodSetRestResouce[] GoodResouce) 
+        public async Task<IActionResult> SetRestToMany(GoodSetRestResouce[] goodResouces) 
         {
-            Goods[] goods = _mapper.Map<GoodSetRestResouce[], Goods[]>(GoodResouce);
-            foreach (Goods item in goods)
+            Good[] goods = _mapper.Map<GoodSetRestResouce[], Good[]>(goodResouces);
+            foreach (Good item in goods)
             {
-                _db.Goods.Attach(item).Property(g=>g.rest).IsModified = true;
+                _db.Goods.Attach(item).Property(g=>g.Rest).IsModified = true;
             }
             await _db.SaveChangesAsync();
             return Ok();
         }
 
         [HttpPost]
-        public async Task<IActionResult> SetPriceToMany(GoodSetPriceResouce[] GoodResouce)
+        public async Task<IActionResult> SetPriceToMany(GoodSetPriceResouce[] goodResouces)
         {
-            Goods[] goods = _mapper.Map<GoodSetPriceResouce[], Goods[]>(GoodResouce);
-            foreach (Goods item in goods)
+            Good[] goods = _mapper.Map<GoodSetPriceResouce[], Good[]>(goodResouces);
+            foreach (Good item in goods)
             {
-                _db.Goods.Attach(item).Property(g => g.price).IsModified = true;
+                _db.Goods.Attach(item).Property(g => g.Price).IsModified = true;
             }
             await _db.SaveChangesAsync();
             return Ok();
         }
 
         [HttpPatch]
-        [Route("{id:int}")]
-        public async Task<IActionResult> Update(ushort id, JsonPatchDocument<Goods> GoodResource)
+        [Route("{Id:int}")]
+        public async Task<IActionResult> Update(ushort id, JsonPatchDocument<Good> goodResource)
         {
-            if (GoodResource == null)
+            if (goodResource == null)
             {
                 return BadRequest("No data to patch");
             }
 
 
-            var Good = _db.Goods.SingleOrDefault(g => g.id == id);
+            var Good = _db.Goods.SingleOrDefault(g => g.Id == id);
             
             if (Good is null)
             {
-                NotFound(new { Message = $"Item with id {id} does not exist." });
+                NotFound(new { Message = $"Item with Id {id} does not exist." });
             }
 
-            GoodResource.ApplyTo(Good, ModelState);
+            goodResource.ApplyTo(Good, ModelState);
 
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            //_mapper.Map<GoodResource, Goods>(GoodResource, Good);
+            //_mapper.Map<GoodResource, Good>(GoodResource, Good);
             await _db.SaveChangesAsync();
-            return Ok(_mapper.Map<Goods, GoodsDTO>( Good));
+            return Ok(_mapper.Map<Good, GoodDTO>( Good));
             //return _af.GetResoult(RouteData, new {  dev = ControllerContext.HttpContext.Items["IsDevelopment"] });
         }
 
@@ -125,11 +125,11 @@ namespace PP.Controllers
         [Route("{skip:int}/{take:int:max(100)}")]
         public IActionResult GetList(int skip, int take)
         {
-            Goods[] goods = _db.Goods
+            Good[] goods = _db.Goods
                 .Skip(skip)
                 .Take(take)
                 .ToArray();
-            GoodsDTO[] goodsDTOs = _mapper.Map<Goods[], GoodsDTO[]>(goods);
+            GoodDTO[] goodsDTOs = _mapper.Map<Good[], GoodDTO[]>(goods);
             return Ok(goods);
 
             //return _af.GetResoult(RouteData, new { skip, take, dev = ControllerContext.HttpContext.Items["IsDevelopment"] });

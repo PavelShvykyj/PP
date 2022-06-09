@@ -6,9 +6,9 @@ namespace PP.API_Resourses
     {
         [Required]
         [Range(0, System.Int16.MaxValue)]
-        public ushort rest { get; set; }
+        public ushort Rest { get; set; }
         [Required]
         [Range(0, System.Int16.MaxValue)]
-        public ushort id { get; set; }
+        public ushort Id { get; set; }
     }
 }

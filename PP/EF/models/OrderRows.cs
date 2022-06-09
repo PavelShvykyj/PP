@@ -1,16 +1,16 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace PP.EF.models
+namespace PP.EF.Models
 {
     public class OrderRows
     {
-        public int id { get; set; }
-        public int orderid { get; set; }
-        public Orders order { get; set; }
-        public ushort goodid { get; set; }
-        public Goods good { get; set; }
-        public decimal price { get; set; }
-        public decimal summ { get; set; }
-        public decimal quantity { get; set; }
+        public int Id { get; set; }
+        public int OrderId { get; set; }
+        public Order Order { get; set; }
+        public ushort GoodId { get; set; }
+        public Good Good { get; set; }
+        public decimal Price { get; set; }
+        public decimal Summ { get; set; }
+        public decimal Quantity { get; set; }
     }
 }

@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PP.API_Resourses;
 using PP.EF;
-using PP.EF.models;
+using PP.EF.Models;
 using PP.Fake;
 
 namespace PP.Controllers
@@ -29,19 +29,19 @@ namespace PP.Controllers
                 return BadRequest();
             }
 
-            if (_db.Customers.Where(c => c.email == CustomerResource.email).Count() != 0) 
+            if (_db.Customers.Where(c => c.Email == CustomerResource.Email).Count() != 0) 
             {
                 return Ok("Exists already");
             }
 
-            Customers newCustomer = _mapper.Map<CustomerResource, Customers>(CustomerResource);
+            Customer newCustomer = _mapper.Map<CustomerResource, Customer>(CustomerResource);
             _db.Customers.Add(newCustomer);
             await _db.SaveChangesAsync();
-            return Ok(_mapper.Map<Customers, CustomersDTO>(newCustomer));
+            return Ok(_mapper.Map<Customer, CustomerDTO>(newCustomer));
         }
 
         [HttpPost]
-        [Route("{id:int}")]
+        [Route("{Id:int}")]
         public async Task<IActionResult> Update(int id, CustomerResource CustomerResource)
         {
             if (!ModelState.IsValid)
@@ -49,15 +49,15 @@ namespace PP.Controllers
                 return BadRequest();
             }
 
-            var Customer = _db.Customers.SingleOrDefault(g => g.id == id);
+            var Customer = _db.Customers.SingleOrDefault(g => g.Id == id);
             if (Customer is null)
             {
                 return BadRequest();
             }
-            _mapper.Map<CustomerResource, Customers>(CustomerResource, Customer);
+            _mapper.Map<CustomerResource, Customer>(CustomerResource, Customer);
             await _db.SaveChangesAsync();
 
-            return Ok(_mapper.Map<Customers, CustomersDTO>(Customer));
+            return Ok(_mapper.Map<Customer, CustomerDTO>(Customer));
             //return _af.GetResoult(RouteData);
         }
 
@@ -65,13 +65,13 @@ namespace PP.Controllers
         [Route("{skip:int}/{take:int:max(100)}")]
         public IActionResult GetList(int skip, int take)
         {
-            Customers[] customers =  _db.Customers
-                .OrderBy(c=> c.email)
+            Customer[] customers =  _db.Customers
+                .OrderBy(c=> c.Email)
                 .Skip(skip)
                 .Take(take)
                 .ToArray();
             
-            CustomersDTO[] customersDTOs = _mapper.Map<Customers[], CustomersDTO[]>(customers);
+            CustomerDTO[] customersDTOs = _mapper.Map<Customer[], CustomerDTO[]>(customers);
             
             return Ok(customersDTOs);
             //return _af.GetResoult(RouteData, new {  take,  skip, dev = ControllerContext.HttpContext.Items["IsDevelopment"] });

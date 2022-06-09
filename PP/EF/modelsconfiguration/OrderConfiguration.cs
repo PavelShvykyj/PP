@@ -1,45 +1,45 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PP.EF.models;
+using PP.EF.Models;
 
-namespace PP.EF.modelsconfiguration
+namespace PP.EF.Modelsconfiguration
 {
-    public class OrderConfiguration : IEntityTypeConfiguration<Orders>
+    public class OrderConfiguration : IEntityTypeConfiguration<Order>
     {
-        public void Configure(EntityTypeBuilder<Orders> builder) {
+        public void Configure(EntityTypeBuilder<Order> builder) {
 
             builder.ToTable("orders");
             
             builder
-                .HasKey(o => o.id)
+                .HasKey(o => o.Id)
                 .IsClustered();
 
             //builder
-            //    .Property(o => o.id)
+            //    .Property(o => o.Id)
             //    .HasDefaultValueSql("GETDATE()");
 
             builder
-                .HasIndex(o => o.customerid)
-                .IncludeProperties(new[] { "id", "summ" } );
+                .HasIndex(o => o.CustomerId)
+                .IncludeProperties(new[] { "Id", "Summ" } );
 
 
             builder
-                .HasOne(o => o.customer)
+                .HasOne(o => o.Customer)
                 .WithMany()
-                .HasForeignKey(o => o.customerid)
+                .HasForeignKey(o => o.CustomerId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder
-                .Property(o => o.summ)
+                .Property(o => o.Summ)
                 .HasColumnType("decimal(15,4)")
                 .HasDefaultValue(0);
             // ??? .HasValueGenerator();
 
 
             builder
-                .HasMany(o => o.rows)
-                .WithOne(r => r.order)
-                .HasForeignKey(r=>r.orderid)
+                .HasMany(o => o.Goods)
+                .WithOne(r => r.Order)
+                .HasForeignKey(r=>r.OrderId)
                 .OnDelete(DeleteBehavior.Cascade);
 
         }

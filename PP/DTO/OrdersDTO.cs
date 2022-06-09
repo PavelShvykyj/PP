@@ -1,13 +1,13 @@
-﻿namespace PP.EF.models
+﻿namespace PP.EF.Models
 {
-    public class OrdersDTO
+    public class OrderDTO
     {
-        public int id { get; set; }
-        public decimal summ { get; set; }
-        public ushort customerid { get; set; }
-        public CustomersDTO customer { get; set; }
-        public string? comment { get; set; }
-        public ICollection<OrderRowsDTO> rows { get; set; }
+        public int Id { get; set; }
+        public decimal Summ { get; set; }
+        public ushort CustomerId { get; set; }
+        public CustomerDTO Customer { get; set; }
+        public string? Comment { get; set; }
+        public ICollection<OrderRowsDTO> Goods { get; set; }
 
     }
 }

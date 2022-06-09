@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using PP.EF.models;
+using PP.EF.Models;
 
 namespace PP.API_Resourses
 {
@@ -19,58 +19,58 @@ namespace PP.API_Resourses
     {
         public ResourceMappingProfile()
         {
-            CreateMap<CustomerResource,Customers >()
-                .ForMember(c=>c.id, x=>x.Ignore());
+            CreateMap<CustomerResource,Customer >()
+                .ForMember(c=>c.Id, x=>x.Ignore());
 
-            CreateMap<GoodResource, Goods>()
-                .ForMember(c => c.id, x => x.Ignore());
+            CreateMap<GoodResource, Good>()
+                .ForMember(c => c.Id, x => x.Ignore());
 
-            CreateMap<GoodSetRestResouce, Goods>()
-                .BeforeMap((r, g) => { g.rest = r.rest; g.id = r.id; } )
+            CreateMap<GoodSetRestResouce, Good>()
+                .BeforeMap((r, g) => { g.Rest = r.Rest; g.Id = r.Id; } )
                 .ForAllMembers(x => x.Ignore());
 
-            CreateMap<GoodSetPriceResouce, Goods>()
-                .BeforeMap((r, g) => { g.price = r.price; g.id = r.id; })
+            CreateMap<GoodSetPriceResouce, Good>()
+                .BeforeMap((r, g) => { g.Price = r.Price; g.Id = r.Id; })
                 .ForAllMembers(x => x.Ignore());
 
-            CreateMap<OrderRowsSetResource, OrderRows>()
-                .ForMember(r=>r.id, x => x.Ignore());
+            CreateMap<OrderGoodsSetResource, OrderRows>()
+                .ForMember(r=>r.Id, x => x.Ignore());
 
-            CreateMap<OrderRows, OrderRowsSetResource>();
+            CreateMap<OrderRows, OrderGoodsSetResource>();
 
             CreateMap<OrderSetResource, OrderSetResource>()
-                .ForMember(o => o.rows, x => x.Ignore());
+                .ForMember(o => o.Goods, x => x.Ignore());
 
-            CreateMap<OrderSetResource, Orders>()
-                .ForMember(o => o.id, x => x.Ignore())
-                .ForMember(o => o.rows, x => x.Ignore())
+            CreateMap<OrderSetResource, Order>()
+                .ForMember(o => o.Id, x => x.Ignore())
+                .ForMember(o => o.Goods, x => x.Ignore())
                 .AfterMap((resourceData, orderData) => {
-                    var ExistingRowsData = orderData.rows;
+                    var ExistingRowsData = orderData.Goods;
                     
                     var toRemove = ExistingRowsData
                         .Where(
-                                r =>!resourceData.rows
-                                .Select(resRow => resRow.goodid)
+                                r =>!resourceData.Goods
+                                .Select(resRow => resRow.GoodId)
                                 .ToArray()
-                                .Contains(r.goodid)
+                                .Contains(r.GoodId)
                             )
-                        .Select(r=> new { goodid = r.goodid })
+                        .Select(r=> new { goodid = r.GoodId })
                         .ToList();
                     
                     var toUpdate = ExistingRowsData
                         .Where(
-                            r => resourceData.rows
-                            .Select(resRow => resRow.goodid)
+                            r => resourceData.Goods
+                            .Select(resRow => resRow.GoodId)
                             .ToArray()
-                            .Contains(r.goodid)
+                            .Contains(r.GoodId)
                         )
-                        .Select(r => new { goodid = r.goodid })
+                        .Select(r => new { goodid = r.GoodId })
                         .ToList();
                      
                    
-                    var toAdd = resourceData.rows
-                        .Select(r=>r.goodid)
-                        .Except(ExistingRowsData.Select(r => r.goodid))
+                    var toAdd = resourceData.Goods
+                        .Select(r=>r.GoodId)
+                        .Except(ExistingRowsData.Select(r => r.GoodId))
                         .ToArray();
 
                     if (toRemove.Count() != 0)
@@ -78,7 +78,7 @@ namespace PP.API_Resourses
                         foreach (var r in toRemove)
                         {
                             ExistingRowsData.Remove(
-                                ExistingRowsData.Single(er=>er.goodid==r.goodid)
+                                ExistingRowsData.Single(er=>er.GoodId==r.goodid)
                                 );
                         }
 
@@ -86,10 +86,10 @@ namespace PP.API_Resourses
                         {
                             foreach (var item in toUpdate)
                             {
-                                var resRow = resourceData.rows.First(r => r.goodid == item.goodid);
-                                var uRow = ExistingRowsData.First(r => r.goodid == item.goodid);
-                                uRow.quantity = resRow.quantity;
-                                uRow.price = resRow.price;
+                                var resRow = resourceData.Goods.First(r => r.GoodId == item.goodid);
+                                var uRow = ExistingRowsData.First(r => r.GoodId == item.goodid);
+                                uRow.Quantity = resRow.Quantity;
+                                uRow.Price = resRow.Price;
                             }
                         }
 
@@ -99,12 +99,12 @@ namespace PP.API_Resourses
                     {
                         foreach (var goodid in toAdd)
                         {
-                            var resRow = resourceData.rows.First(r => r.goodid == goodid);
+                            var resRow = resourceData.Goods.First(r => r.GoodId == goodid);
                             OrderRows newRow = new OrderRows() {
-                                goodid = resRow.goodid,
-                                quantity = resRow.quantity,
-                                price = resRow.price,
-                                orderid = orderData.id
+                                GoodId = resRow.GoodId,
+                                Quantity = resRow.Quantity,
+                                Price = resRow.Price,
+                                OrderId = orderData.Id
                             }; 
                             ExistingRowsData.Add(newRow);
                         }

@@ -2,10 +2,10 @@
 {
     public class OrdersListDTO
     {
-        public DateTime id { get; set; }
-        public decimal summ { get; set; }
-        public ushort customerid { get; set; }
-        public string customername { get; set; }
+        public DateTime Id { get; set; }
+        public decimal Summ { get; set; }
+        public ushort CustomerId { get; set; }
+        public string CustomerName { get; set; }
 
     }
 }
