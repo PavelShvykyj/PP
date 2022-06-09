@@ -9,6 +9,7 @@ namespace PP.EF.modelsconfiguration
         public void Configure(EntityTypeBuilder<Goods> builder) {
 
             builder.ToTable("goods");
+            
             builder.HasKey(g => g.id);
             
             builder.Property(g => g.name)

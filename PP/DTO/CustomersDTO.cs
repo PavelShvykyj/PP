@@ -2,11 +2,15 @@
 
 namespace PP.EF.models
 {
-    public class Customers
+    public class CustomersDTO
     {
+        [Required]
         public ushort id { get; set; }
-        public string name { get; set; } = null!;
+        [Required]
+        [MaxLength(100)]
+        public string name { get; set; }
         [EmailAddress]
+        [Required]
         public string email { get; set; } = null!;
     }
 }

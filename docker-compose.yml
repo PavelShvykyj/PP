@@ -1,0 +1,19 @@
+version: '3.4'
+
+services:
+  db:
+    image: "mcr.microsoft.com/mssql/server:2019-latest"
+    ports:
+      - "1433:1433"
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Mylocalhost88!
+      - MSSQL_PID=Express
+
+  pp:
+    image: ${DOCKER_REGISTRY-}pp
+    build:
+      context: .
+      dockerfile: PP/Dockerfile
+    depends_on:
+      - db
