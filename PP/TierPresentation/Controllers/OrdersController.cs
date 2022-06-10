@@ -1,8 +1,8 @@
 ﻿ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using CoreTier.APIResourses;
-using CoreTier.DTO;
+using DTO.APIResourses;
+using DTO.DTO;
 using DataTier;
 using DataTier.Models;
 using PP.Fake;

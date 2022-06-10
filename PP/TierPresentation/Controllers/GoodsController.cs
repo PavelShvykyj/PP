@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
 using PP.Fake;
 using AutoMapper;
 using DataTier;
-using CoreTier.APIResourses;
-using CoreTier.DTO;
+using DTO.APIResourses;
+using DTO.DTO;
 using DataTier.Models;
 using Microsoft.AspNetCore.JsonPatch;
 

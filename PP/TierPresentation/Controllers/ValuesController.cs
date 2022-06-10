@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using CoreTier.APIResourses;
+using DTO.APIResourses;
 using DataTier;
 using DataTier.Models;
 
