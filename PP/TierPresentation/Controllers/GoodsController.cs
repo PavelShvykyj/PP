@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using PP.Fake;
 using AutoMapper;
 using PP.EF;
-using PP.API_Resourses;
+using PP.APIResourses;
 using PP.EF.Models;
 using Microsoft.AspNetCore.JsonPatch;
 

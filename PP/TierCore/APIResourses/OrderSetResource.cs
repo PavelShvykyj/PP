@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace PP.API_Resourses
+namespace PP.APIResourses
 {
     public class OrderSetResource
     {
