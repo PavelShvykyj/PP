@@ -4,6 +4,7 @@ using PP.Fake;
 using AutoMapper;
 using DataTier;
 using PP.CoreTier.APIResourses;
+using PP.CoreTier.DTO;
 using DataTier.Models;
 using Microsoft.AspNetCore.JsonPatch;
 
