@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataTier", "..\DataFlow\Dat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreTier", "..\CoreTier\CoreTier.csproj", "{4FD5E0E6-1E02-45AB-AC3A-D07CE063D329}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DTO", "..\DTO\DTO.csproj", "{ACDDBE49-72CC-4107-9803-521873B1BEF4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{4FD5E0E6-1E02-45AB-AC3A-D07CE063D329}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4FD5E0E6-1E02-45AB-AC3A-D07CE063D329}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4FD5E0E6-1E02-45AB-AC3A-D07CE063D329}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACDDBE49-72CC-4107-9803-521873B1BEF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACDDBE49-72CC-4107-9803-521873B1BEF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACDDBE49-72CC-4107-9803-521873B1BEF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACDDBE49-72CC-4107-9803-521873B1BEF4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,10 +1,9 @@
 
 
 using Microsoft.EntityFrameworkCore;
-using CoreTier.APIResourses;
-using CoreTier.DTO;
 using DataTier;
 using PP.Fake;
+using CoreTier.MappingProfiles;
 
 var builder = WebApplication.CreateBuilder(args);
 
