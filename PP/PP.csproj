@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\CoreTier\CoreTier.csproj" />
     <ProjectReference Include="..\..\DataFlow\DataTier.csproj" />
   </ItemGroup>
 

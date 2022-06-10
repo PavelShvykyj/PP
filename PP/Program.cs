@@ -1,8 +1,8 @@
 
 
 using Microsoft.EntityFrameworkCore;
-using PP.CoreTier.APIResourses;
-using PP.CoreTier.DTO;
+using CoreTier.APIResourses;
+using CoreTier.DTO;
 using DataTier;
 using PP.Fake;
 

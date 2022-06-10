@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Http;
 using PP.Fake;
 using AutoMapper;
 using DataTier;
-using PP.CoreTier.APIResourses;
-using PP.CoreTier.DTO;
+using CoreTier.APIResourses;
+using CoreTier.DTO;
 using DataTier.Models;
 using Microsoft.AspNetCore.JsonPatch;
 
