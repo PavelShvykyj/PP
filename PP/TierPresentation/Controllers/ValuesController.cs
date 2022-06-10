@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using PP.APIResourses;
-using PP.EF;
-using PP.EF.Models;
+using PP.CoreTier.APIResourses;
+using DataTier;
+using DataTier.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 

@@ -1,4 +1,4 @@
-﻿namespace PP.DTO
+﻿namespace PP.CoreTier.DTO
 {
     public class OrdersListDTO
     {

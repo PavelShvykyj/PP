@@ -1,4 +1,4 @@
-﻿namespace PP.EF.Models
+﻿namespace PP.CoreTier.DTO
 {
     public class OrderDTO
     {

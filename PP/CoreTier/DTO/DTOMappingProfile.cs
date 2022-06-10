@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using PP.EF.Models;
+using DataTier.Models;
 
-namespace PP.DTO
+namespace PP.CoreTier.DTO
 {
     public class DTOMappingProfile : Profile
     {

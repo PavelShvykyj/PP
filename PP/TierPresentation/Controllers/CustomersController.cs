@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using PP.APIResourses;
-using PP.EF;
-using PP.EF.Models;
+using PP.CoreTier.APIResourses;
+using PP.CoreTier.DTO;
+using DataTier;
+using DataTier.Models;
 using PP.Fake;
 
 namespace PP.Controllers

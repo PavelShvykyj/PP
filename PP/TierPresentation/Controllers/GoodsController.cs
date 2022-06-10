@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Http;
 using PP.Fake;
 using AutoMapper;
-using PP.EF;
-using PP.APIResourses;
-using PP.EF.Models;
+using DataTier;
+using PP.CoreTier.APIResourses;
+using DataTier.Models;
 using Microsoft.AspNetCore.JsonPatch;
 
 namespace PP.Controllers

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace PP.EF.Models
+namespace PP.CoreTier.DTO
 {
     public class GoodDTO
     {

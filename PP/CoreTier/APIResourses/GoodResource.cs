@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace PP.APIResourses
+namespace PP.CoreTier.APIResourses
 {
     public class GoodResource
     {

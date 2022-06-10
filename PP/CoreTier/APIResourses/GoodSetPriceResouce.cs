@@ -1,12 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace PP.APIResourses
+namespace PP.CoreTier.APIResourses
 {
-    public class GoodSetRestResouce
+    public class GoodSetPriceResouce
     {
         [Required]
-        [Range(0, System.Int16.MaxValue)]
-        public ushort Rest { get; set; }
+        public decimal Price { get; set; }
+
         [Required]
         [Range(0, System.Int16.MaxValue)]
         public ushort Id { get; set; }
