@@ -13,16 +13,17 @@ namespace CoreTier.Services
     {
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
-
         public IGoodService GoodService { get; private set; }
         public ICustomerService CustomerService { get; private set; }
         public IOrderService OrderService { get; private set; }
-
 
         public DataService(IMapper mapper, IUnitOfWork unitOfWork)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
+            GoodService = new GoodService(mapper, unitOfWork);
+            CustomerService = new CustomerService(mapper, unitOfWork);
+            OrderService = new OrderService(mapper, unitOfWork);
         }
     }
 }
