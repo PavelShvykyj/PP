@@ -11,19 +11,16 @@ namespace Repository
     internal class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
         protected readonly DbContext _context; 
-
         public Repository(DbContext context)
         {
             _context = context;
         }
-        
         public void Create(TEntity resource)
         {
            _context
                 .Set<TEntity>()
                 .Add(resource);
         }
-
         public TEntity Get(int id)
         {
             var Entity = _context
@@ -36,8 +33,7 @@ namespace Repository
 
             return Entity;
         }
-
-        public IEnumerable<TEntity> GetList(int take, int skip)
+        public  IEnumerable<TEntity> GetList(int take, int skip)
         {
             return _context
                 .Set<TEntity>()
@@ -45,7 +41,6 @@ namespace Repository
                 .Take(take)
                 .ToList();
         }
-
         public void Update(TEntity resource)
         {
             _context

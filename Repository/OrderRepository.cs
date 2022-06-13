@@ -1,0 +1,34 @@
+﻿using DataTier;
+using DataTier.Models;
+using Microsoft.EntityFrameworkCore;
+using Repository.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Repository
+{
+    internal class OrderRepository : Repository<Order>, IOrderRepositoty
+    {
+        private ApplicationContext _db
+        {
+            get { return _context as ApplicationContext; }
+        }
+        public OrderRepository(ApplicationContext context)
+            : base(context)
+        {
+
+        }
+        public  IEnumerable<Object> GetOrdersShortList(int take, int skip) 
+        {
+            return _db.Orders.Include(o => o.Customer)
+                            .OrderBy(o => o.CustomerId)
+                            .Skip(skip)
+                            .Take(take)
+                            .Select(o => new { id = o.Id, summ = o.Summ, customer = o.Customer })
+                            .ToList();
+        }
+    }
+}
