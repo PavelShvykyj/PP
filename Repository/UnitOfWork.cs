@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Repository
 {
-    internal class UnitOfWork : IUnitOfWork
+    public class UnitOfWork : IUnitOfWork
     {
         public IGoodRepository Goods { get; private set; }
         public ICustomerRepository Customers { get; private set; }
