@@ -28,7 +28,7 @@ namespace Repository
                 .Find(id);
             if (Entity is null)
             {
-                throw new KeyNotFoundException();
+                throw null;
             }
 
             return Entity;
