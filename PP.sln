@@ -7,13 +7,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PP", "PP\PP.csproj", "{E755
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{6E37C076-D771-4FE4-9B80-9EC36D3EB406}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataTier", "..\DataFlow\DataTier.csproj", "{6876E7F4-AE00-4995-8816-35998D60964B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataTier", "DataFlow\DataTier.csproj", "{6876E7F4-AE00-4995-8816-35998D60964B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreTier", "..\CoreTier\CoreTier.csproj", "{4FD5E0E6-1E02-45AB-AC3A-D07CE063D329}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoreTier", "CoreTier\CoreTier.csproj", "{4FD5E0E6-1E02-45AB-AC3A-D07CE063D329}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DTO", "..\DTO\DTO.csproj", "{ACDDBE49-72CC-4107-9803-521873B1BEF4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DTO", "DTO\DTO.csproj", "{ACDDBE49-72CC-4107-9803-521873B1BEF4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repository", "..\Repository\Repository.csproj", "{C605BE19-5E7B-4617-A3AF-AE7C405E08C1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repository", "Repository\Repository.csproj", "{C605BE19-5E7B-4617-A3AF-AE7C405E08C1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
