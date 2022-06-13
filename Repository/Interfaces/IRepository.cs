@@ -3,8 +3,9 @@
     public interface IRepository<TEntity> 
         where TEntity : class
     {
-        TEntity Create(TEntity resource);
-        TEntity Update(TEntity resource);
+        void Create(TEntity resource);
+        void Update(TEntity resource);
+        TEntity Get(int id);        
         IEnumerable<TEntity> GetList(int take, int skip);
     }
 }
