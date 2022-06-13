@@ -37,12 +37,12 @@ namespace CoreTier.Services
 
         public GoodDTO Get(int id)
         {
-            Good Good = _unitOfWork.Goods.Get(id);
-            if (Good == null)
+            Good good = _unitOfWork.Goods.Get(id);
+            if (good == null)
             {
                 return null;
             }
-            return _mapper.Map<Good, GoodDTO>(Good);
+            return _mapper.Map<Good, GoodDTO>(good);
 
         }
 

@@ -30,5 +30,18 @@ namespace Repository
                             .Select(o => new { id = o.Id, summ = o.Summ, customer = o.Customer })
                             .ToList();
         }
+
+        public Order GetOrderWithProperties(int id) 
+        {
+
+            return _db.Orders.Include(c => c.Customer)
+                  .Include(c => c.Goods)
+                  .ThenInclude(r => r.Good)
+                  .Single(o => o.Id == id);
+        }
+
+        public void AddGoods(OrderRows[] orderGoods) {
+            _db.OrderRows.AddRange(orderGoods);
+        }
     }
 }
