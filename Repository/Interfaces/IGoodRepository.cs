@@ -5,8 +5,8 @@ namespace Repository.Interfaces
     public interface IGoodRepository : IRepository<Good>
     {
         void SetRest(ushort id, ushort rest);
-        void SetRestToMany(Dictionary<ushort,ushort>[] resource);
+        void SetRestToMany(List<Good> resource);
         void SetPrice(ushort id, decimal price);
-        void SetPriceToMany(Dictionary<ushort, ushort>[] resource);
+        void SetPriceToMany(List<Good> resource);
     }
 }
