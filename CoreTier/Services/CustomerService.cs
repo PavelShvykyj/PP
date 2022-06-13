@@ -25,17 +25,21 @@ namespace CoreTier.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<CustomerDTO> Create(CustomerResource resource)
+        public async Task<CustomerDTO> CreateAsync(CustomerResource resource)
         {
+            CustomerDTO CustomerDTO = null;
             Customer newCustomer = _unitOfWork.Customers.GetCustomerByEmail(resource.Email);
             if (newCustomer != null) 
             {
-                return _mapper.Map<Customer, CustomerDTO>(newCustomer);
+                CustomerDTO = _mapper.Map<Customer, CustomerDTO>(newCustomer);
+                return CustomerDTO;
             }
             newCustomer = _mapper.Map<CustomerResource, Customer>(resource);
             _unitOfWork.Customers.Create(newCustomer);
             await _unitOfWork.SaveAsync();
-            return _mapper.Map<Customer, CustomerDTO>(newCustomer);
+            CustomerDTO = _mapper.Map<Customer, CustomerDTO>(newCustomer);
+
+            return CustomerDTO;
         }
 
         public CustomerDTO Get(int id)
@@ -50,12 +54,25 @@ namespace CoreTier.Services
 
         public IEnumerable<CustomerDTO> GetList(int take, int skip)
         {
-            throw new NotImplementedException();
+            Customer[] customers = _unitOfWork.Customers.GetList( take,  skip)
+               .Skip(skip)
+               .Take(take)
+               .ToArray();
+
+            CustomerDTO[] customersDTOs = _mapper.Map<Customer[], CustomerDTO[]>(customers);
+            return customersDTOs;
         }
 
-        public CustomerDTO Update(CustomerResource resource)
+        public async Task<CustomerDTO> UpdateAsync(int id, CustomerResource resource)
         {
-            throw new NotImplementedException();
+            var Customer = _unitOfWork.Customers.Get(id);
+            if (Customer is null)
+            {
+                return null;
+            }
+            _mapper.Map<CustomerResource, Customer>(resource, Customer);
+            await _unitOfWork.SaveAsync();
+            return _mapper.Map<Customer, CustomerDTO>(Customer);
         }
     }
 }
