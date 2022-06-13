@@ -2,7 +2,7 @@
 using DTO.APIResourses;
 using DTO.DTO;
 
-namespace Repository.Interfaces
+namespace CoreTier.Interfaces
 {
     public interface IOrderService : IUnitService<OrderSetResource, OrderDTO>
     {

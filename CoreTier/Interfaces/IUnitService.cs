@@ -1,4 +1,4 @@
-﻿namespace Repository.Interfaces
+﻿namespace CoreTier.Interfaces
 {
     public interface IUnitService<R,T> 
         where R : class

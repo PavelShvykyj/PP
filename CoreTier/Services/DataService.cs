@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CoreTier.Interfaces;
 using Repository.Interfaces;
 
 namespace CoreTier.Services
@@ -13,9 +14,9 @@ namespace CoreTier.Services
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
 
-        public IGoodService GoodsServise { get; private set; }
-        public ICustomerService CustomerServise { get; private set; }
-        public IOrderService OrderServise { get; private set; }
+        public IGoodService GoodService { get; private set; }
+        public ICustomerService CustomerService { get; private set; }
+        public IOrderService OrderService { get; private set; }
 
 
         public DataService(IMapper mapper, IUnitOfWork unitOfWork)
