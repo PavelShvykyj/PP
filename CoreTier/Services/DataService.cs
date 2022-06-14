@@ -9,7 +9,7 @@ using Repository.Interfaces;
 
 namespace CoreTier.Services
 {
-    internal class DataService
+    public class DataService : IDataService
     {
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
