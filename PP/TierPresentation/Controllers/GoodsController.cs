@@ -31,31 +31,31 @@ namespace PP.Controllers
 
         [HttpPost]
         [Route("{Id:int}/{Price:decimal}")]
-        public IActionResult SetPrice(ushort id, decimal price)
+        public async Task<IActionResult> SetPrice(ushort id, decimal price)
         {
-            _dataService.SetPrice(id, price);   
-            return Ok();
+            var count = await _dataService.SetPriceAsync(id, price);   
+            return Ok(string.Format("Saved {0} items", count));
         }
 
         [HttpPost]
         [Route("{Id:int}/{Rest:int}")]
-        public IActionResult SetRest(ushort id, ushort rest)
+        public async Task<IActionResult> SetRest(ushort id, ushort rest)
         {
-            _dataService.SetRest(id, rest);
-            return Ok();
+            var count = await _dataService.SetRestAsync(id, rest);
+            return Ok(string.Format("Saved {0} items", count));
         }
         [HttpPost]
-        public IActionResult SetRestToMany(GoodSetRestResouce[] goodResouces) 
+        public async Task<IActionResult> SetRestToMany(GoodSetRestResouce[] goodResouces) 
         {
-            _dataService.SetRestToMany(goodResouces.ToList());
-            return Ok();
+            var count = await _dataService.SetRestToManyAsync(goodResouces.ToList());
+            return Ok(string.Format("Saved {0} items", count));
         }
 
         [HttpPost]
-        public  IActionResult SetPriceToMany(GoodSetPriceResouce[] goodResouces)
+        public async Task<IActionResult> SetPriceToMany(GoodSetPriceResouce[] goodResouces)
         {
-             _dataService.SetPriceToMany(goodResouces.ToList());
-            return Ok();
+            var count = await _dataService.SetPriceToManyAsync(goodResouces.ToList());
+            return Ok(string.Format("Saved {0} items", count));
         }
 
         [HttpPatch]

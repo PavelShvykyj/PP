@@ -52,7 +52,7 @@ namespace CoreTier.Services
             return _mapper.Map<Customer, CustomerDTO>(Customer);
         }
 
-        public IEnumerable<CustomerDTO> GetList(int take, int skip)
+        public IEnumerable<CustomerDTO> GetList(int skip, int take)
         {
             Customer[] customers = _unitOfWork.Customers.GetList( take,  skip)
                .Skip(skip)
@@ -65,14 +65,15 @@ namespace CoreTier.Services
 
         public async Task<CustomerDTO> UpdateAsync(int id, CustomerResource resource)
         {
-            var Customer = _unitOfWork.Customers.Get(id);
-            if (Customer is null)
+            Customer customer = _unitOfWork.Customers.Get(id);
+            if (customer is null)
             {
                 return null;
             }
-            _mapper.Map<CustomerResource, Customer>(resource, Customer);
+            _mapper.Map<CustomerResource, Customer>(resource, customer);
+            _unitOfWork.Customers.Update(customer);
             await _unitOfWork.SaveAsync();
-            return _mapper.Map<Customer, CustomerDTO>(Customer);
+            return _mapper.Map<Customer, CustomerDTO>(customer);
         }
     }
 }

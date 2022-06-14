@@ -9,7 +9,7 @@ using Repository.Interfaces;
 
 namespace CoreTier.Services
 {
-    public class DataService : IDataService
+    public class DataService : IDataService, IDisposable
     {
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
@@ -24,6 +24,11 @@ namespace CoreTier.Services
             GoodService = new GoodService(mapper, unitOfWork);
             CustomerService = new CustomerService(mapper, unitOfWork);
             OrderService = new OrderService(mapper, unitOfWork);
+        }
+
+        public void Dispose()
+        {
+            _unitOfWork.Dispose();
         }
     }
 }

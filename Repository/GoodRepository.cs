@@ -22,40 +22,54 @@ namespace Repository
         }
         public void SetPrice(ushort id, decimal price)
         {
-            var Good = _db.Goods.SingleOrDefault(g => g.Id == id);
-            if (Good is null)
+            Good good = _db.Goods.SingleOrDefault(g => g.Id == id);
+            if (good is null)
             {
-                throw new KeyNotFoundException(String.Format("Good with {Id} not found", id));    
+                throw new KeyNotFoundException(String.Format("Good with {id} not found", id));    
             }
-            Good.Price = price;
+            good.Price = price;
+            _db.Goods.Update(good);
         }
         public void SetPriceToMany(List<Good> items)
         {
             foreach (var item in items)
             {
-                _db.Goods
-                    .Attach(item)
-                    .Property(g => g.Rest)
+                var atached = _db.Goods
+                    .Attach(item);
+
+                atached.Property(g => g.Rest)
+                    .IsModified = false;
+
+                atached.Property(g => g.Name)
+                    .IsModified = false;
+
+                atached.Property(g => g.Price)
                     .IsModified = true;
             }
         }
         public void SetRest(ushort id, ushort rest)
         {
-            var Good = _db.Goods.SingleOrDefault(g => g.Id == id);
-            if (Good is null)
+            Good good = _db.Goods.SingleOrDefault(g => g.Id == id);
+            if (good is null)
             {
                 throw new KeyNotFoundException(String.Format("Good with {Id} not found", id));
             }
-            Good.Rest = rest;
+            good.Rest = rest;
+            _db.Goods.Update(good);
+
         }
         public void SetRestToMany(List<Good> items)
         {
             foreach (var item in items)
             {
-                _db.Goods
-                    .Attach(item)
-                    .Property(g => g.Rest)
+                var atached = _db.Goods
+                    .Attach(item);
+                atached.Property(g => g.Rest)
                     .IsModified = true;
+                atached.Property(g => g.Name)
+                    .IsModified = false;
+                atached.Property(g => g.Price)
+                    .IsModified = false;
             }
         }
     }

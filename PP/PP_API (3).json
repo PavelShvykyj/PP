@@ -35,7 +35,7 @@
                 "name": "https",
                 "version": "V11"
               },
-              "host": "localhost:51452",
+              "host": "localhost:56430",
               "path": "/API/Customers/Create"
             },
             "id": "31399767-b29f-45f9-9bb9-4ec5fa14d852",
@@ -74,8 +74,8 @@
                 "name": "https",
                 "version": "V11"
               },
-              "host": "localhost:65005",
-              "path": "/API/Customers/GetList/0/5"
+              "host": "localhost:56430",
+              "path": "/API/Customers/GetList/5/70"
             },
             "id": "1ea77e8d-34e6-4523-8710-4e94500c15f2",
             "name": "CustomersList",
@@ -97,7 +97,7 @@
                 "items": []
               },
               "bodyType": "Text",
-              "textBody": "{\n  \"name\" : \"Alice\",\n  \"email\" : \"Alice@gmail.com\"\n}"
+              "textBody": "{\n  \"name\" : \"Alice_4\",\n  \"email\" : \"Alice_4@gmail.com\"\n}"
             },
             "uri": {
               "query": {
@@ -109,7 +109,7 @@
                 "name": "https",
                 "version": "V11"
               },
-              "host": "localhost:51452",
+              "host": "localhost:56430",
               "path": "/API/Customers/Update/4"
             },
             "id": "5c994bbd-eb23-40c8-bb99-dd26929bb86d",
@@ -138,7 +138,7 @@
                 "items": []
               },
               "bodyType": "Text",
-              "textBody": "{\n  \"name\" : \"1001 good\"\n}"
+              "textBody": "{\n  \"name\" : \"1007 good\"\n}"
             },
             "uri": {
               "query": {
@@ -150,7 +150,7 @@
                 "name": "https",
                 "version": "V11"
               },
-              "host": "localhost:54478",
+              "host": "localhost:56430",
               "path": "/API/Goods/Create"
             },
             "id": "ebca348d-83f0-4d79-bbe1-1f5ca907cb5b",
@@ -189,7 +189,7 @@
                 "name": "https",
                 "version": "V11"
               },
-              "host": "localhost:65005",
+              "host": "localhost:56430",
               "path": "/API/Goods/GetList/0/10"
             },
             "id": "4d19cd53-1978-457b-9810-5eca0a5a4d1d",
@@ -223,8 +223,8 @@
                 "name": "https",
                 "version": "V11"
               },
-              "host": "localhost:51452",
-              "path": "/API/Goods/SetPrice/1/23.7"
+              "host": "localhost:56430",
+              "path": "/API/Goods/SetPrice/4/23.7"
             },
             "id": "6a70b814-20b1-4dc3-8b20-748e44e82f5f",
             "name": "GoodsSetPrice",
@@ -264,7 +264,7 @@
                 "name": "https",
                 "version": "V11"
               },
-              "host": "localhost:51452",
+              "host": "localhost:56430",
               "path": "/API/Goods/SetRestToMany"
             },
             "id": "5b0ad44a-e72e-47bd-845a-14af2805c882",
@@ -293,7 +293,7 @@
                 "items": []
               },
               "bodyType": "Text",
-              "textBody": "[\n  {\n   \"op\": \"add\",\n   \"path\": \"/price\",\n   \"value\": 22.7\n  }\n]"
+              "textBody": "[\n  {\n   \"op\": \"add\",\n   \"path\": \"/Price\",\n   \"value\": 24.7\n  }\n]"
             },
             "uri": {
               "query": {
@@ -305,7 +305,7 @@
                 "name": "https",
                 "version": "V11"
               },
-              "host": "localhost:54885",
+              "host": "localhost:56430",
               "path": "/API/Goods/Update/3"
             },
             "id": "e4ec6050-dca2-4ef0-8a3e-8f4d1d022460",
@@ -334,7 +334,7 @@
                 "items": []
               },
               "bodyType": "Text",
-              "textBody": "{\n  \"customerid\": 14,\n  \"comment\":\"test\",\n  \"rows\" : [\n    {\n\t\t\"goodid\" : 12,\n  \t\t\"price\"\t: 1.5,\n  \t\t\"quantity\":185\n\t},\n    {\n\t\t\"goodid\" : 6,\n  \t\t\"price\"\t: 2.0,\n  \t\t\"quantity\":3\n\t}\n\n  ]\n}"
+              "textBody": "{\n  \"CustomerId\": 14,\n  \"Comment\":\"test\",\n  \"Goods\" : [\n    {\n\t\t\"GoodId\" : 12,\n  \t\t\"Price\"\t: 1.5,\n  \t\t\"Quantity\":185\n\t},\n    {\n\t\t\"GoodId\" : 6,\n  \t\t\"Price\"\t: 2.0,\n  \t\t\"Quantity\":3\n\t}\n\n  ]\n}"
             },
             "uri": {
               "query": {
@@ -346,7 +346,7 @@
                 "name": "https",
                 "version": "V11"
               },
-              "host": "localhost:51426",
+              "host": "localhost:56430",
               "path": "/API/Orders/Create"
             },
             "id": "4bed868a-e9ff-4c9e-bcc6-6102b8c190ca",
@@ -415,7 +415,7 @@
                 "items": []
               },
               "bodyType": "Text",
-              "textBody": "{\n  \"customerid\": 14,\n  \"comment\":\"test\",\n  \"rows\" : [\n    {\n\t\t\"goodid\" : 12,\n  \t\t\"price\"\t: 1.5,\n  \t\t\"quantity\":70\n\t},\n    {\n\t\t\"goodid\" : 73,\n  \t\t\"price\"\t: 1.8,\n  \t\t\"quantity\":2\n\t}\n    \n    \n    \n  ]\n}"
+              "textBody": "{\n  \"customerid\": 14,\n  \"comment\":\"test\",\n  \"goods\" : [\n    {\n\t\t\"goodid\" : 12,\n  \t\t\"price\"\t: 1.5,\n  \t\t\"quantity\":70\n\t},\n    {\n\t\t\"goodid\" : 73,\n  \t\t\"price\"\t: 1.8,\n  \t\t\"quantity\":2\n\t}\n    \n    \n    \n  ]\n}"
             },
             "uri": {
               "query": {
@@ -427,8 +427,8 @@
                 "name": "https",
                 "version": "V11"
               },
-              "host": "localhost:51426",
-              "path": "/API/Orders/Update/4"
+              "host": "localhost:56430",
+              "path": "/API/Orders/Update/2"
             },
             "id": "37ab850f-4eac-48dd-8192-c0e347745ca1",
             "name": "OrderUpdate",
@@ -560,7 +560,7 @@
                 "name": "https",
                 "version": "V11"
               },
-              "host": "localhost:51426",
+              "host": "localhost:56430",
               "path": "/API/Values/SeedCustomers/1000"
             },
             "id": "8018aa7f-6a30-4cb1-bccd-75bcfabfeca7",
@@ -600,7 +600,7 @@
                 "name": "https",
                 "version": "V11"
               },
-              "host": "localhost:51426",
+              "host": "localhost:56430",
               "path": "/API/Values/SeedGoods/100"
             },
             "id": "bc0b3659-9f56-4cda-ac53-f496031903c1",

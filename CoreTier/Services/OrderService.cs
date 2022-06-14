@@ -45,10 +45,10 @@ namespace CoreTier.Services
             }
             return _mapper.Map<Order, OrderDTO>(order);
         }
-        public IEnumerable<OrderDTO> GetList(int take, int skip)
+        public List<OrdersListDTO> GetList(int take, int skip)
         {
-            var orders = _unitOfWork.Orders.GetOrdersShortList(take, skip);
-            return (orders as IEnumerable<OrderDTO>);
+            List<OrdersListDTO> orders = _unitOfWork.Orders.GetOrdersShortList(take, skip);
+            return orders;
         }
         public async Task<OrderDTO> UpdateAsync(int id, OrderSetResource orderdata)
         {
@@ -60,7 +60,13 @@ namespace CoreTier.Services
             _mapper.Map<OrderSetResource, Order>(orderdata, order);
             _unitOfWork.Orders.Update(order);
             await _unitOfWork.SaveAsync();
+            
             return _mapper.Map<Order, OrderDTO>(order);
+        }
+
+        IEnumerable<OrderDTO> IUnitService<OrderSetResource, OrderDTO>.GetList(int take, int skip)
+        {
+            throw new NotImplementedException();
         }
     }
 }

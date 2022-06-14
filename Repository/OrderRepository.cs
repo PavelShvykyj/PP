@@ -2,6 +2,7 @@
 using DataTier.Models;
 using Microsoft.EntityFrameworkCore;
 using Repository.Interfaces;
+using DTO.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,13 +22,13 @@ namespace Repository
         {
 
         }
-        public  IEnumerable<Object> GetOrdersShortList(int take, int skip) 
+        public List<OrdersListDTO> GetOrdersShortList(int take, int skip) 
         {
             return _db.Orders.Include(o => o.Customer)
                             .OrderBy(o => o.CustomerId)
                             .Skip(skip)
                             .Take(take)
-                            .Select(o => new { id = o.Id, summ = o.Summ, customer = o.Customer })
+                            .Select(o => new OrdersListDTO { Id = o.Id, Summ = o.Summ, CustomerId = o.CustomerId , CustomerName = o.Customer.Name })
                             .ToList();
         }
 

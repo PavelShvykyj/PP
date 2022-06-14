@@ -28,12 +28,25 @@ namespace Repository
                 .Find(id);
             if (Entity is null)
             {
-                throw null;
+                return null;
             }
-
             return Entity;
         }
-        public  IEnumerable<TEntity> GetList(int take, int skip)
+
+        public TEntity Get(ushort id)
+        {
+            var Entity = _context
+                .Set<TEntity>()
+                .Find(id);
+            if (Entity is null)
+            {
+                return null;
+            }
+            return Entity;
+        }
+
+
+        public IEnumerable<TEntity> GetList(int take, int skip)
         {
             return _context
                 .Set<TEntity>()

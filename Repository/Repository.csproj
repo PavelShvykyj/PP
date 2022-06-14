@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DataFlow\DataTier.csproj" />
+    <ProjectReference Include="..\DTO\DTO.csproj" />
   </ItemGroup>
 
 </Project>

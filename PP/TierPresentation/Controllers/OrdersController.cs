@@ -44,7 +44,7 @@ namespace PP.Controllers
         [Route("{skip:int}/{take:int:max(100)}")]
         public IActionResult GetList(int skip, int take)
         {
-            OrderDTO[] orderDTOs = (OrderDTO[])_dataService.GetList(take, skip);
+            var orderDTOs = _dataService.GetList(take, skip);
             return Ok(orderDTOs);
         }
 

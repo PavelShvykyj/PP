@@ -57,32 +57,35 @@ namespace CoreTier.Services
             return GoodDTOs;
         }
 
-        public async void  SetPrice(ushort id, decimal price)
+        public async Task<int> SetPriceAsync(ushort id, decimal price)
         {
             _unitOfWork.Goods.SetPrice(id, price);
-            await _unitOfWork.SaveAsync();
-            return;
+            var count =  await _unitOfWork.SaveAsync();
+            return count;
         }
 
-        public async void SetPriceToMany(List<GoodSetPriceResouce> resource)
+        public async Task<int> SetPriceToManyAsync(List<GoodSetPriceResouce> resource)
         {
             List<Good> goods = _mapper.Map<List<GoodSetPriceResouce>, List<Good>>(resource);
             _unitOfWork.Goods.SetPriceToMany(goods);
-            await _unitOfWork.SaveAsync();
+            var count = await _unitOfWork.SaveAsync();
+            return count;
         }
 
-        public async void SetRest(ushort id, ushort rest)
+        public async Task<int> SetRestAsync(ushort id, ushort rest)
         {
             _unitOfWork.Goods.SetRest(id, rest);
-            await _unitOfWork.SaveAsync();
-            return;
+            var count =  await _unitOfWork.SaveAsync();
+            return count;
         }
 
-        public async void SetRestToMany(List<GoodSetRestResouce> resource)
+        public async Task<int> SetRestToManyAsync(List<GoodSetRestResouce> resource)
         {
+            
             List<Good> goods = _mapper.Map<List<GoodSetRestResouce>, List<Good>>(resource);
             _unitOfWork.Goods.SetRestToMany(goods);
-            await _unitOfWork.SaveAsync();
+            var count = await _unitOfWork.SaveAsync();
+            return count;
         }
 
         public async Task<GoodDTO> UpdateAsync(int id, GoodResource resource)
@@ -98,7 +101,7 @@ namespace CoreTier.Services
             return _mapper.Map<Good, GoodDTO>(Good);
         }
 
-        public async Task<GoodDTO> PatchAsync(int id, JsonPatchDocument<Good> resource, ModelStateDictionary modelState)
+        public async Task<GoodDTO> PatchAsync(ushort id, JsonPatchDocument<Good> resource, ModelStateDictionary modelState)
         {
             var Good = _unitOfWork.Goods.Get(id);
             if (Good is null)
