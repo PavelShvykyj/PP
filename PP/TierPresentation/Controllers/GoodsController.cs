@@ -1,11 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PP.Fake;
-using AutoMapper;
-using DataTier;
 using DTO.APIResourses;
 using DTO.DTO;
 using DataTier.Models;
 using Microsoft.AspNetCore.JsonPatch;
+using CoreTier.Interfaces;
 
 namespace PP.Controllers
 {
@@ -13,15 +11,11 @@ namespace PP.Controllers
     [Route("API/[Controller]/[Action]")]
     public class GoodsController : ControllerBase
     {
-        private readonly ActionsResultFake _af;
-        private readonly IMapper _mapper;
-        private readonly ApplicationContext _db;
+        private readonly IGoodService _dataService;
 
-        public GoodsController(ActionsResultFake af, IMapper mapper, ApplicationContext context)
+        public GoodsController(IDataService dataService )
         {
-            _af = af;
-            _mapper = mapper;
-            _db = context;
+            _dataService = dataService.GoodService;
         }
 
         [HttpPost]
@@ -29,65 +23,38 @@ namespace PP.Controllers
         {
             if (!ModelState.IsValid) 
             {
-                return BadRequest();
+                return BadRequest(ModelState);
             }
-
-            Good newGood = _mapper.Map<GoodResource, Good>(goodResource);
-            _db.Goods.Add(newGood);
-            await _db.SaveChangesAsync();
-            return Ok(_mapper.Map<Good, GoodDTO>(newGood));
+            GoodDTO goodDTO = await _dataService.CreateAsync(goodResource);
+            return Ok(goodDTO);
         }
 
         [HttpPost]
         [Route("{Id:int}/{Price:decimal}")]
-        public async Task<IActionResult> SetPrice(ushort id, decimal price)
+        public IActionResult SetPrice(ushort id, decimal price)
         {
-            var Good = _db.Goods.SingleOrDefault(g => g.Id == id);
-            if (Good is null)
-            {
-                return BadRequest();
-            }
-            Good.Price = price;
-            await _db.SaveChangesAsync();
+            _dataService.SetPrice(id, price);   
             return Ok();
-            //return _af.GetResoult(RouteData, new { Id,  Price , dev = ControllerContext.HttpContext.Items["IsDevelopment"] } );
         }
 
         [HttpPost]
         [Route("{Id:int}/{Rest:int}")]
-        public async Task<IActionResult> SetRest(ushort id, ushort rest)
+        public IActionResult SetRest(ushort id, ushort rest)
         {
-            var Good = _db.Goods.SingleOrDefault(g => g.Id == id);
-            if (Good is null)
-            {
-                return BadRequest();
-            }
-            Good.Rest = rest;
-            await _db.SaveChangesAsync();
+            _dataService.SetRest(id, rest);
             return Ok();
-            //return _af.GetResoult(RouteData, new { Id,  Rest, dev = ControllerContext.HttpContext.Items["IsDevelopment"] } );
         }
         [HttpPost]
-        public async Task<IActionResult> SetRestToMany(GoodSetRestResouce[] goodResouces) 
+        public IActionResult SetRestToMany(GoodSetRestResouce[] goodResouces) 
         {
-            Good[] goods = _mapper.Map<GoodSetRestResouce[], Good[]>(goodResouces);
-            foreach (Good item in goods)
-            {
-                _db.Goods.Attach(item).Property(g=>g.Rest).IsModified = true;
-            }
-            await _db.SaveChangesAsync();
+            _dataService.SetRestToMany(goodResouces.ToList());
             return Ok();
         }
 
         [HttpPost]
-        public async Task<IActionResult> SetPriceToMany(GoodSetPriceResouce[] goodResouces)
+        public  IActionResult SetPriceToMany(GoodSetPriceResouce[] goodResouces)
         {
-            Good[] goods = _mapper.Map<GoodSetPriceResouce[], Good[]>(goodResouces);
-            foreach (Good item in goods)
-            {
-                _db.Goods.Attach(item).Property(g => g.Price).IsModified = true;
-            }
-            await _db.SaveChangesAsync();
+             _dataService.SetPriceToMany(goodResouces.ToList());
             return Ok();
         }
 
@@ -95,44 +62,20 @@ namespace PP.Controllers
         [Route("{Id:int}")]
         public async Task<IActionResult> Update(ushort id, JsonPatchDocument<Good> goodResource)
         {
-            if (goodResource == null)
+            GoodDTO goodDTO = await _dataService.PatchAsync(id, goodResource, ModelState);
+            if (!ModelState.IsValid) 
             {
-                return BadRequest("No data to patch");
+                BadRequest(ModelState);
             }
-
-
-            var Good = _db.Goods.SingleOrDefault(g => g.Id == id);
-            
-            if (Good is null)
-            {
-                NotFound(new { Message = $"Item with Id {id} does not exist." });
-            }
-
-            goodResource.ApplyTo(Good, ModelState);
-
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            //_mapper.Map<GoodResource, Good>(GoodResource, Good);
-            await _db.SaveChangesAsync();
-            return Ok(_mapper.Map<Good, GoodDTO>( Good));
-            //return _af.GetResoult(RouteData, new {  dev = ControllerContext.HttpContext.Items["IsDevelopment"] });
+            return Ok(goodDTO);
         }
 
         [HttpGet]
         [Route("{skip:int}/{take:int:max(100)}")]
         public IActionResult GetList(int skip, int take)
         {
-            Good[] goods = _db.Goods
-                .Skip(skip)
-                .Take(take)
-                .ToArray();
-            GoodDTO[] goodsDTOs = _mapper.Map<Good[], GoodDTO[]>(goods);
-            return Ok(goods);
-
-            //return _af.GetResoult(RouteData, new { skip, take, dev = ControllerContext.HttpContext.Items["IsDevelopment"] });
+            GoodDTO[] goodsDTOs = (GoodDTO[])_dataService.GetList(take, skip);
+            return Ok(goodsDTOs);
         }
     }
 }
