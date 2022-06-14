@@ -1,9 +1,7 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using PP.APIResourses;
-using PP.EF;
-using PP.EF.Models;
-using PP.Fake;
+﻿using Microsoft.AspNetCore.Mvc;
+using DTO.APIResourses;
+using DTO.DTO;
+using CoreTier.Interfaces;
 
 namespace PP.Controllers
 {
@@ -11,14 +9,11 @@ namespace PP.Controllers
     [Route("API/[Controller]/[Action]")]
     public class CustomersController : ControllerBase
     {
-        private ActionsResultFake _af;
-        private readonly IMapper _mapper;
-        private readonly ApplicationContext _db;
-        public CustomersController(ActionsResultFake af , IMapper mapper, ApplicationContext context)
+        private readonly ICustomerService _dataService;
+
+        public CustomersController(IDataService dataService)
         {
-            _af = af;
-            _mapper = mapper;
-            _db = context;
+            _dataService = dataService.CustomerService;
         }
         
         [HttpPost]
@@ -26,18 +21,10 @@ namespace PP.Controllers
         {
             if (!ModelState.IsValid )
             {
-                return BadRequest();
+                return BadRequest(ModelState);
             }
-
-            if (_db.Customers.Where(c => c.Email == CustomerResource.Email).Count() != 0) 
-            {
-                return Ok("Exists already");
-            }
-
-            Customer newCustomer = _mapper.Map<CustomerResource, Customer>(CustomerResource);
-            _db.Customers.Add(newCustomer);
-            await _db.SaveChangesAsync();
-            return Ok(_mapper.Map<Customer, CustomerDTO>(newCustomer));
+            CustomerDTO customerDTO = await _dataService.CreateAsync(CustomerResource);
+            return Ok(customerDTO);
         }
 
         [HttpPost]
@@ -46,35 +33,18 @@ namespace PP.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest();
+                return BadRequest(ModelState);
             }
-
-            var Customer = _db.Customers.SingleOrDefault(g => g.Id == id);
-            if (Customer is null)
-            {
-                return BadRequest();
-            }
-            _mapper.Map<CustomerResource, Customer>(CustomerResource, Customer);
-            await _db.SaveChangesAsync();
-
-            return Ok(_mapper.Map<Customer, CustomerDTO>(Customer));
-            //return _af.GetResoult(RouteData);
+            CustomerDTO customerDTO = await _dataService.UpdateAsync(id, CustomerResource);
+            return Ok(customerDTO);
         }
 
         [HttpGet]
         [Route("{skip:int}/{take:int:max(100)}")]
         public IActionResult GetList(int skip, int take)
         {
-            Customer[] customers =  _db.Customers
-                .OrderBy(c=> c.Email)
-                .Skip(skip)
-                .Take(take)
-                .ToArray();
-            
-            CustomerDTO[] customersDTOs = _mapper.Map<Customer[], CustomerDTO[]>(customers);
-            
+            CustomerDTO[] customersDTOs = (CustomerDTO[])_dataService.GetList(skip, take);
             return Ok(customersDTOs);
-            //return _af.GetResoult(RouteData, new {  take,  skip, dev = ControllerContext.HttpContext.Items["IsDevelopment"] });
         }
     }
 }

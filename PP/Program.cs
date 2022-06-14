@@ -1,10 +1,13 @@
 
 
 using Microsoft.EntityFrameworkCore;
-using PP.APIResourses;
-using PP.DTO;
-using PP.EF;
+using DataTier;
 using PP.Fake;
+using CoreTier.MappingProfiles;
+using CoreTier.Services;
+using Repository;
+using Repository.Interfaces;
+using CoreTier.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,8 +16,13 @@ Console.WriteLine(connection);
 builder.Services.AddControllers().AddNewtonsoftJson();
 
 builder.Services.AddSingleton<ActionsResultFake>();
+
+
 builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connection));
 builder.Services.AddAutoMapper(new[] { typeof(DTOMappingProfile), typeof(ResourceMappingProfile) } );
+
+builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
+builder.Services.AddScoped<IDataService,DataService>();
 
 var app = builder.Build();
 app.Use(
