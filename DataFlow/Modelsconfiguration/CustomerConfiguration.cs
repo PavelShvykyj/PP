@@ -19,8 +19,8 @@ namespace DataTier.Modelsconfiguration
                     .HasMaxLength(100);
 
             builder.Property(c => c.Email)
-                    .IsRequired()
-                    .HasMaxLength(150);
+                    .IsRequired();
+                    
         }
     }
 }
