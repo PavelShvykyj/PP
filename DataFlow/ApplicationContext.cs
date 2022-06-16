@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using DataTier.Models;
 using DataTier.Modelsconfiguration;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace DataTier
 {
-    public class ApplicationContext : DbContext
+    public class ApplicationContext : IdentityDbContext<User>
     {
         public DbSet<Good> Goods { get; set; }
         public DbSet<Customer> Customers { get; set; }
