@@ -71,6 +71,7 @@ builder.Services.AddAuthorization(options =>
 
 builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
 builder.Services.AddScoped<IDataService,DataService>();
+builder.Services.AddScoped<IIdentityService,IdentityService>();
 builder.Services.AddSingleton<ActionsResultFake>();
 
 var app = builder.Build();
