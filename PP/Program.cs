@@ -83,10 +83,23 @@ app.Use(
     }
 );
 
-
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
 app.MapGet("/", () => "Hello World!");
+
+
+//////////  -------this do not work here ----------- 
+//var identityService = app.Services.GetService<IIdentityService>();
+//var res = await identityService.SeedIdentityDataBaseAsync();
+
+//using (var scope = app.Services.CreateScope()) {
+//    var service = scope.ServiceProvider.GetRequiredService<IIdentityService>();
+//    var res = await service.SeedIdentityDataBaseAsync();
+//    Console.WriteLine(res);
+//}
+
 app.Run();
+
+

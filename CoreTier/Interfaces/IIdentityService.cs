@@ -11,5 +11,7 @@ namespace CoreTier.Interfaces
     public interface IIdentityService
     {
         Task<IdentityResult> SignUpAsync(SignInResource signInData);
+        Task<IdentityResult> SeedIdentityDataBaseAsync();
+
     }
 }
