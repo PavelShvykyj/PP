@@ -3,6 +3,7 @@ using CoreTier.Interfaces;
 using DataTier.Models;
 using DTO.APIResourses;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,13 +18,13 @@ namespace CoreTier.Services
         private readonly SignInManager<User> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
 
-        //private readonly DataService _dataService;
+        private readonly IDataService _dataService;
         private readonly IMapper _mapper;
 
         public IdentityService(UserManager<User> userManager,
                                SignInManager<User> signInManager,
                                RoleManager<IdentityRole> roleManager,
-                               //DataService dataService,
+                               IDataService dataService,
                                IMapper mapper
 
             )
@@ -31,8 +32,10 @@ namespace CoreTier.Services
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
-            //_dataService = dataService;
+            _dataService = dataService;
             _mapper = mapper;
+
+            
         }
 
         public async Task<IdentityResult> SignUpAsync(SignInResource signInData) {
@@ -67,6 +70,8 @@ namespace CoreTier.Services
             return IdentityResult.Success;
         }
 
+  
+
         public  async Task<IdentityResult> SeedIdentityDataBaseAsync() 
         {
 
@@ -74,7 +79,7 @@ namespace CoreTier.Services
             var managerRoleName = "Manager";
             var defoultAdminName = adminRoleName;
             var defoultAdminMail = "Developers@Mail.Com";
-            var defoultAdminPass = "StoNgSecu12rityPass!";
+            var defoultAdminPass = "StroNgSecu12rityPass!";
 
             var resoult = await CreateRoleAsync(adminRoleName);
             if (!resoult.Succeeded)

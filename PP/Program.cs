@@ -72,9 +72,12 @@ builder.Services.AddAuthorization(options =>
 builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
 builder.Services.AddScoped<IDataService,DataService>();
 builder.Services.AddScoped<IIdentityService,IdentityService>();
+builder.Services.AddHostedService<IdentityHosedService>();
+
 builder.Services.AddSingleton<ActionsResultFake>();
 
-var app = builder.Build();
+
+WebApplication app = builder.Build();
 app.Use(
     async (context, next) =>
     {
@@ -88,17 +91,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 app.MapGet("/", () => "Hello World!");
-
-
-//////////  -------this do not work here ----------- 
-//var identityService = app.Services.GetService<IIdentityService>();
-//var res = await identityService.SeedIdentityDataBaseAsync();
-
-//using (var scope = app.Services.CreateScope()) {
-//    var service = scope.ServiceProvider.GetRequiredService<IIdentityService>();
-//    var res = await service.SeedIdentityDataBaseAsync();
-//    Console.WriteLine(res);
-//}
 
 app.Run();
 

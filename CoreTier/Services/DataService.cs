@@ -17,18 +17,21 @@ namespace CoreTier.Services
         public ICustomerService CustomerService { get; private set; }
         public IOrderService OrderService { get; private set; }
 
-        public DataService(IMapper mapper, IUnitOfWork unitOfWork)
+        public DataService(
+            IMapper mapper,
+            IUnitOfWork unitOfWork
+            )
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
-            GoodService = new GoodService(mapper, unitOfWork);
-            CustomerService = new CustomerService(mapper, unitOfWork);
-            OrderService = new OrderService(mapper, unitOfWork);
+            GoodService = new GoodService(_mapper, _unitOfWork);
+            CustomerService = new CustomerService(_mapper, _unitOfWork);
+            OrderService = new OrderService(_mapper, _unitOfWork);
         }
 
         public void Dispose()
         {
-            _unitOfWork.Dispose();
+           _unitOfWork.Dispose();
         }
     }
 }
