@@ -2,6 +2,7 @@
 using CoreTier.Services;
 using DTO.APIResourses;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace PP.TierPresentation.Controllers
@@ -31,6 +32,49 @@ namespace PP.TierPresentation.Controllers
         
         }
 
-    
+        [HttpPost]
+        public async Task<IActionResult> LogInAsync(LogInResource logInData)
+        {
+            var resoult = await _identityService.SignInAsync(logInData);
+            if (resoult.Succeeded)
+            {
+                return Ok();
+            }
+            HttpContext.Response.StatusCode = 401;
+            return BadRequest();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> LogOutAsync()
+        {
+            await _identityService.SignOutAsync();
+            return Ok();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddToRoleAsync(SetRoleResource roleData)
+        {
+            if (!ModelState.IsValid) 
+            {
+                return BadRequest(ModelState); 
+            }
+            IdentityResult res = await _identityService.AddToRoleAsync(roleData);
+            if(!res.Succeeded) return BadRequest(res.Errors);
+            return Ok();
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> RemoveFromRoleAsync(SetRoleResource roleData)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            IdentityResult res = await _identityService.RemoveFromRoleAsync(roleData);
+            if (!res.Succeeded) return BadRequest(res.Errors);
+            return Ok();
+        }
+
     }
 }

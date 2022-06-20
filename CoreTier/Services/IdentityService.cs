@@ -12,6 +12,14 @@ using System.Threading.Tasks;
 
 namespace CoreTier.Services
 {
+    internal class CheckedRoleData : ICheckedRoleData
+    {
+        public IdentityRole Role { get; set; }
+        public IdentityUser User { get; set; }
+        public bool IsChecked { get; set; }
+    }
+
+
     public class IdentityService : IIdentityService
     {
         private readonly UserManager<User> _userManager;
@@ -58,6 +66,29 @@ namespace CoreTier.Services
             return resoult;
         }
 
+        public async Task<SignInResult> SignInAsync(LogInResource logInData) 
+        {
+            var user = await _userManager.FindByEmailAsync(logInData.Email);
+            var exists = (user is not null);
+            if (!exists)
+            {
+                return SignInResult.Failed;
+            }
+
+            var resoult =  await _signInManager
+                                .PasswordSignInAsync(
+                                     user,
+                                     logInData.Password,
+                                     logInData.RememberMe,
+                                     false);
+            return resoult;
+        }
+
+        public async Task SignOutAsync()
+        {
+             await _signInManager.SignOutAsync();
+        }
+
         private async Task<IdentityResult> CreateRoleAsync(string roleName) {
             IdentityRole role = new IdentityRole(roleName);
             var roleExists = await _roleManager.RoleExistsAsync(role.Name);
@@ -69,8 +100,6 @@ namespace CoreTier.Services
             }
             return IdentityResult.Success;
         }
-
-  
 
         public  async Task<IdentityResult> SeedIdentityDataBaseAsync() 
         {
@@ -120,6 +149,51 @@ namespace CoreTier.Services
             }
             return IdentityResult.Success;
         }
+
+        internal async Task<ICheckedRoleData> CheckRoleData(SetRoleResource roleData) 
+        {
+            var resoult = new CheckedRoleData();
+            resoult.User = await _userManager.FindByEmailAsync(roleData.Email);
+            resoult.Role = _roleManager.Roles
+                .FirstOrDefault(r => r.Name == roleData.RoleName);
+
+            resoult.IsChecked = (resoult.User != null) & (resoult.Role != null);
+            return resoult;
         }
+
+
+        public async Task<IdentityResult> AddToRoleAsync(SetRoleResource roleData) 
+        {
+            var resoult = await CheckRoleData(roleData);
+            if (!resoult.IsChecked)
+            {
+                return IdentityResult.Failed(new[] 
+                { 
+                    new IdentityError() 
+                    {
+                        Description = "Wrong Email or role name"
+                    }
+                } );
+            }
+            return await _userManager.AddToRoleAsync((User)resoult.User, roleData.RoleName);
+        }
+
+        public async Task<IdentityResult> RemoveFromRoleAsync(SetRoleResource roleData) 
+        {
+            var resoult = await CheckRoleData(roleData);
+            if (!resoult.IsChecked)
+            {
+                return IdentityResult.Failed(new[]
+                {
+                    new IdentityError()
+                    {
+                        Description = "Wrong Email or role name"
+                    }
+                });
+            }
+            return await _userManager.RemoveFromRoleAsync((User)resoult.User, roleData.RoleName);
+        }
+    }
+
     }
 
