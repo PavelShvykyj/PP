@@ -9,7 +9,9 @@ using Repository;
 using Repository.Interfaces;
 using CoreTier.Interfaces;
 using DataTier.Models;
+using CoreTier.CustomRequirement;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -50,29 +52,38 @@ builder.Services.ConfigureApplicationCookie(options =>
         };
     });
 
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("OnlyAdmin",policy =>
-    {
-        policy.RequireRole("Admin");
-    });
 
-    options.AddPolicy("OnlyEmployee", policy =>
-    {
-        policy.RequireRole(new string[] { "Admin", "Manager" } );
-    });
-
-    options.AddPolicy("Onlyauthenticated", policy =>
-    {
-        policy.RequireAuthenticatedUser();
-    });
-});   
 
 
 builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
 builder.Services.AddScoped<IDataService,DataService>();
 builder.Services.AddScoped<IIdentityService,IdentityService>();
 builder.Services.AddHostedService<IdentityHosedService>();
+builder.Services.AddTransient<IAuthorizationHandler, OwnOrdersHandler>();
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("OnlyAdmin", policy =>
+    {
+        policy.RequireRole("Admin");
+    });
+
+    options.AddPolicy("OnlyEmployee", policy =>
+    {
+        policy.RequireRole(new string[] { "Admin", "Manager" });
+    });
+
+    options.AddPolicy("Onlyauthenticated", policy =>
+    {
+        policy.RequireAuthenticatedUser();
+    });
+
+    options.AddPolicy("OwnOrders", policy =>
+    {
+        policy.AddRequirements(new EmployeeRequirement(new[] { "Admin", "Manager" }));
+    });
+
+});
+
 
 builder.Services.AddSingleton<ActionsResultFake>();
 

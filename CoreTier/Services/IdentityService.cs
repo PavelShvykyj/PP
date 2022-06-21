@@ -2,11 +2,13 @@
 using CoreTier.Interfaces;
 using DataTier.Models;
 using DTO.APIResourses;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -28,12 +30,14 @@ namespace CoreTier.Services
 
         private readonly IDataService _dataService;
         private readonly IMapper _mapper;
+        private readonly IHttpContextAccessor _contextAccessor;
 
         public IdentityService(UserManager<User> userManager,
                                SignInManager<User> signInManager,
                                RoleManager<IdentityRole> roleManager,
                                IDataService dataService,
-                               IMapper mapper
+                               IMapper mapper,
+                               IHttpContextAccessor contextAccessor
 
             )
         {
@@ -42,8 +46,23 @@ namespace CoreTier.Services
             _roleManager = roleManager;
             _dataService = dataService;
             _mapper = mapper;
-
-            
+            _contextAccessor = contextAccessor;
+        }
+        public async Task<IdentityResult> ChangeEmailAsync(LogInResource logInResource, ClaimsPrincipal loggedUser)
+        {
+            var user = await _userManager.GetUserAsync(loggedUser);
+            if (user == null)
+            {
+                return IdentityResult.Failed(new[]
+                 {
+                    new IdentityError()
+                    {
+                        Description = "not looged in"
+                    }
+                });
+            }
+            user.Email = logInResource.Email;
+            return  await _userManager.UpdateAsync(user);
         }
 
         public async Task<IdentityResult> SignUpAsync(SignInResource signInData) {

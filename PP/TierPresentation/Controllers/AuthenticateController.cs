@@ -45,6 +45,19 @@ namespace PP.TierPresentation.Controllers
         }
 
         [HttpPost]
+        public async Task<IActionResult> ChangeEmailAsync(LogInResource logInData)
+        {
+            var resoult = await _identityService.ChangeEmailAsync(logInData, HttpContext.User);
+            if (resoult.Succeeded)
+            {
+                return Ok();
+            }
+            return BadRequest(resoult);
+        }
+
+
+
+        [HttpPost]
         public async Task<IActionResult> LogOutAsync()
         {
             await _identityService.SignOutAsync();

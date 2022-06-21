@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace CoreTier.CustomRequirement
 {
-    internal class EmployeeRequirement : IAuthorizationRequirement
+    public class EmployeeRequirement : IAuthorizationRequirement
     {
-        protected internal IdentityRole[] _roles { get; set; }
+        protected internal string[] _roleNames { get; set; }
 
-        public EmployeeRequirement(IdentityRole[] roles)
+        public EmployeeRequirement(string[] roleNames)
         {
-            _roles = roles;
+            _roleNames = roleNames;
         }
     }
 }
