@@ -9,7 +9,7 @@ using Repository.Interfaces;
 
 namespace CoreTier.Services
 {
-    public class DataService : IDataService, IDisposable
+    public class DataManager : IDataService, IDisposable
     {
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
@@ -17,7 +17,7 @@ namespace CoreTier.Services
         public ICustomerService CustomerService { get; private set; }
         public IOrderService OrderService { get; private set; }
 
-        public DataService(
+        public DataManager(
             IMapper mapper,
             IUnitOfWork unitOfWork
             )

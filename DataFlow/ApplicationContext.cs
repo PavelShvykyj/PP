@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using DataTier.Models;
-using DataTier.Modelsconfiguration;
+using DataTier.ModelsConfiguration;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace DataTier

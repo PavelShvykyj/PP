@@ -56,7 +56,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 
 builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
-builder.Services.AddScoped<IDataService,DataService>();
+builder.Services.AddScoped<IDataService,DataManager>();
 builder.Services.AddScoped<IIdentityService,IdentityService>();
 builder.Services.AddHostedService<IdentityHosedService>();
 builder.Services.AddTransient<IAuthorizationHandler, OwnOrdersHandler>();

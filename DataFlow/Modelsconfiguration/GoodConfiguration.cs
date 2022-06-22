@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using DataTier.Models;
 
-namespace DataTier.Modelsconfiguration
+namespace DataTier.ModelsConfiguration
 {
     public class GoodConfiguration : IEntityTypeConfiguration<Good>
     {
