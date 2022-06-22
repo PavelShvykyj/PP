@@ -10,5 +10,7 @@ namespace DataTier.Models
     public class User : IdentityUser
     {
         public Customer Customer { get; set; }
+        public int CustomerId { get; set; }
+
     }
 }

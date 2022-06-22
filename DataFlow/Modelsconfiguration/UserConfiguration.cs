@@ -12,8 +12,8 @@ namespace DataTier.Modelsconfiguration
 
             builder.HasOne(u => u.Customer)
                    .WithOne(c => c.User)
-                   .HasForeignKey<Customer>(c => c.Email)
-                   .HasPrincipalKey<User>(u => u.Email);
+                   .HasForeignKey<Customer>(c => c.Id)
+                   .HasPrincipalKey<User>(u => u.CustomerId);
         }
     }
 }
