@@ -17,23 +17,23 @@ namespace CoreTier.CustomRequirement
     {
         private readonly UserManager<User> _userManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly IDataService _dataService;
+        //private readonly IDataService _dataService;
 
-        public OwnOrdersHandler(UserManager<User> userManager,
-                                IHttpContextAccessor contextAccessor,
-                                IDataService dataService
+        public OwnOrdersHandler(UserManager<User> userManager
+                                ,IHttpContextAccessor contextAccessor
+                                //,IDataService dataService
                                 )
         {
             _userManager = userManager;
             _httpContextAccessor = contextAccessor;
-            _dataService = dataService;
+            //_dataService = dataService;
         }
         
         protected override async Task<Task> HandleRequirementAsync(AuthorizationHandlerContext context,
                                                                    EmployeeRequirement requirement,
                                                                    OrderSetResource resource)
         {
-            int customerId = resource.CustomerId;
+            //int customerId = resource.CustomerId;
 
 
 
@@ -48,10 +48,10 @@ namespace CoreTier.CustomRequirement
             //}
             //customerId = Int32.Parse(CustomerValues[0]);
             var user = await _userManager.GetUserAsync(_httpContextAccessor.HttpContext.User);
-            var orderCustomer = _dataService.CustomerService.Get(customerId);
+            //var orderCustomer = _dataService.CustomerService.Get(customerId);
 
 
-            bool isOwn = (user.Email == orderCustomer.Email);
+            bool isOwn = (user.CustomerId == resource.CustomerId);
             if (isOwn)
             {
                 context.Succeed(requirement);
