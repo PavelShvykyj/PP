@@ -76,7 +76,6 @@ namespace CoreTier.Services
                         }
                 });
             }
-
             /// mapper
             user = _mapper.Map<SignInResource, User>(signInData);
             var customer = _mapper.Map<SignInResource, Customer>(signInData);
@@ -84,7 +83,6 @@ namespace CoreTier.Services
             var resoult  =  await _userManager.CreateAsync(user, signInData.Password);
             return resoult;
         }
-
         public async Task<SignInResult> SignInAsync(LogInResource logInData) 
         {
             var user = await _userManager.FindByEmailAsync(logInData.Email);
@@ -102,12 +100,10 @@ namespace CoreTier.Services
                                      false);
             return resoult;
         }
-
         public async Task SignOutAsync()
         {
              await _signInManager.SignOutAsync();
         }
-
         private async Task<IdentityResult> CreateRoleAsync(string roleName) {
             IdentityRole role = new IdentityRole(roleName);
             var roleExists = await _roleManager.RoleExistsAsync(role.Name);
@@ -119,7 +115,6 @@ namespace CoreTier.Services
             }
             return IdentityResult.Success;
         }
-
         public  async Task<IdentityResult> SeedIdentityDataBaseAsync() 
         {
 
@@ -143,8 +138,15 @@ namespace CoreTier.Services
             var adminUser = await _userManager.FindByEmailAsync(defoultAdminMail);
             if (adminUser == null) 
             {
+                Customer customerAdmin = new Customer()
+                {
+                    Email = defoultAdminMail,
+                    Name  = defoultAdminName
+                };
+                
                 adminUser = new User()
                 {
+                    Customer = customerAdmin,
                     Email = defoultAdminMail,
                     UserName = defoultAdminName
                 };
@@ -168,7 +170,6 @@ namespace CoreTier.Services
             }
             return IdentityResult.Success;
         }
-
         internal async Task<ICheckedRoleData> CheckRoleData(SetRoleResource roleData) 
         {
             var resoult = new CheckedRoleData();
@@ -179,8 +180,6 @@ namespace CoreTier.Services
             resoult.IsChecked = (resoult.User != null) & (resoult.Role != null);
             return resoult;
         }
-
-
         public async Task<IdentityResult> AddToRoleAsync(SetRoleResource roleData) 
         {
             var resoult = await CheckRoleData(roleData);
@@ -196,7 +195,6 @@ namespace CoreTier.Services
             }
             return await _userManager.AddToRoleAsync((User)resoult.User, roleData.RoleName);
         }
-
         public async Task<IdentityResult> RemoveFromRoleAsync(SetRoleResource roleData) 
         {
             var resoult = await CheckRoleData(roleData);
@@ -212,7 +210,6 @@ namespace CoreTier.Services
             }
             return await _userManager.RemoveFromRoleAsync((User)resoult.User, roleData.RoleName);
         }
-    }
-
+        }
     }
 

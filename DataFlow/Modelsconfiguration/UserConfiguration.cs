@@ -8,12 +8,11 @@ namespace DataTier.Modelsconfiguration
     {
         public void Configure(EntityTypeBuilder<User> builder) {
 
-            builder.Ignore(u => u.Customer);
+            //builder.Ignore(u => u.Customer);
 
             builder.HasOne(u => u.Customer)
                    .WithOne(c => c.User)
-                   .HasForeignKey<Customer>(c => c.Id)
-                   .HasPrincipalKey<User>(u => u.CustomerId);
+                   .HasForeignKey<User>(u => u.CustomerId);
         }
     }
 }
