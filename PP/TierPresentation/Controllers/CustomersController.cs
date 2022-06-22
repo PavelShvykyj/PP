@@ -42,7 +42,7 @@ namespace PP.Controllers
             return Ok(customerDTO);
         }
 
-        [Authorize(Policy = "Onlyauthenticated")]
+        [Authorize(Policy = "OnlyAuthenticated")]
         [HttpGet]
         [Route("{skip:int}/{take:int:max(100)}")]
         public IActionResult GetList(int skip, int take)

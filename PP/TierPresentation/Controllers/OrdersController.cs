@@ -68,7 +68,7 @@ namespace PP.Controllers
             return Ok(orderDTO);
         }
 
-        [Authorize(Policy = "Onlyauthenticated")]
+        [Authorize(Policy = "OnlyAuthenticated")]
         [HttpGet]
         [Route("{skip:int}/{take:int:max(100)}")]
         public IActionResult GetList(int skip, int take)
@@ -79,7 +79,7 @@ namespace PP.Controllers
             return Ok(orderDTOs);
         }
 
-        [Authorize(Policy = "Onlyauthenticated")]
+        [Authorize(Policy = "OnlyAuthenticated")]
         [HttpPost]
         [Route("{Id:int}")]
         public IActionResult Pay()
@@ -87,7 +87,7 @@ namespace PP.Controllers
             return Ok();
         }
 
-        [Authorize(Policy = "Onlyauthenticated")]
+        [Authorize(Policy = "OnlyAuthenticated")]
         [HttpPost]
         [Route("{Id:int}")]
         public IActionResult Cancel()

@@ -45,7 +45,7 @@ namespace PP.TierPresentation.Controllers
             return BadRequest();
         }
 
-        [Authorize(Policy = "Onlyauthenticated")]
+        [Authorize(Policy = "OnlyAuthenticated")]
         [HttpPost]
         public async Task<IActionResult> ChangeEmailAsync(LogInResource logInData)
         {
