@@ -62,7 +62,7 @@
                 "items": []
               },
               "bodyType": "Text",
-              "textBody": "{\n  \"Email\":\"Developers@Mail.Com\",\n  \"RoleName\":\"Manager\"\n}"
+              "textBody": "{\n  \"Email\":\"Olga@Email.com\",\n  \"RoleName\":\"Manager\"\n}"
             },
             "uri": {
               "query": {
@@ -74,7 +74,7 @@
                 "name": "https",
                 "version": "V11"
               },
-              "host": "localhost:59690",
+              "host": "localhost:61772",
               "path": "/API/Authenticate/AddToRole"
             },
             "id": "bde1db47-16e1-47b8-88b1-60d1912b1c4d",
@@ -103,7 +103,52 @@
                 "items": []
               },
               "bodyType": "Text",
-              "textBody": "{\n  \"Email\":\"Developers@Mail.Com\",\n  \"Password\":\"StroNgSecu12rityPass!\",\n  \"RememberMe\":\"true\"\n}"
+              "textBody": "{\n  \"Email\":\"Misha_1@Email.com\",\n  \"Password\":\"AAbb333!\",\n  \"RememberMe\":\"true\"\n}"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": []
+              },
+              "scheme": {
+                "secure": true,
+                "name": "https",
+                "version": "V11"
+              },
+              "host": "localhost:57145",
+              "path": "/API/Authenticate/ChangeEmail"
+            },
+            "id": "bd7de3be-955a-4919-807e-2603915d4e7b",
+            "name": "AuthChangeEmail",
+            "headers": [
+              {
+                "enabled": true,
+                "name": "Cookie",
+                "value": "${getEntityById(\"0abf041c-2963-4562-8f73-84bf8b80df69\").\"response\".\"headers\".\"set-cookie\".substring(\"0\", \"\")}"
+              },
+              {
+                "enabled": true,
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        },
+        {
+          "entity": {
+            "type": "Request",
+            "method": {
+              "requestBody": true,
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+              "name": "POST"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text"
             },
             "uri": {
               "query": {
@@ -116,6 +161,47 @@
                 "version": "V11"
               },
               "host": "localhost:59690",
+              "path": "/API/Authenticate/LogOut"
+            },
+            "id": "f03f6b47-de4e-40d5-9e71-263d67433919",
+            "name": "AuthLogOut",
+            "headers": [
+              {
+                "enabled": true,
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        },
+        {
+          "entity": {
+            "type": "Request",
+            "method": {
+              "requestBody": true,
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+              "name": "POST"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text",
+              "textBody": "{\n  \"Email\":\"Misha@Email.com\",\n  \"Password\":\"BBaa333!\",\n  \"RememberMe\":\"true\"\n}"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": []
+              },
+              "scheme": {
+                "secure": true,
+                "name": "https",
+                "version": "V11"
+              },
+              "host": "localhost:61772",
               "path": "/API/Authenticate/LogIn"
             },
             "id": "0abf041c-2963-4562-8f73-84bf8b80df69",
@@ -219,7 +305,7 @@
                 "items": []
               },
               "bodyType": "Text",
-              "textBody": "{\n  \"Name\":\"Misha\",\n  \"Email\":\"Misha@Email.com\",\n  \"Password\":\"AAbb333!\",\n  \"PasswordConfirm\":\"AAbb333!\"\n}"
+              "textBody": "{\n  \"Name\":\"Misha\",\n  \"Email\":\"Misha@Email.com\",\n  \"Password\":\"BBaa333!\",\n  \"PasswordConfirm\":\"BBaa333!\"\n}"
             },
             "uri": {
               "query": {
@@ -231,7 +317,7 @@
                 "name": "https",
                 "version": "V11"
               },
-              "host": "localhost:59690",
+              "host": "localhost:61772",
               "path": "/API/Authenticate/SignUp"
             },
             "id": "a60a171e-99ab-482e-a4ee-1c5b1e57a092",
@@ -272,7 +358,7 @@
                 "name": "https",
                 "version": "V11"
               },
-              "host": "localhost:56430",
+              "host": "localhost:57145",
               "path": "/API/Customers/Create"
             },
             "id": "31399767-b29f-45f9-9bb9-4ec5fa14d852",
@@ -571,7 +657,7 @@
                 "items": []
               },
               "bodyType": "Text",
-              "textBody": "{\n  \"CustomerId\": 14,\n  \"Comment\":\"test\",\n  \"Goods\" : [\n    {\n\t\t\"GoodId\" : 12,\n  \t\t\"Price\"\t: 1.5,\n  \t\t\"Quantity\":185\n\t},\n    {\n\t\t\"GoodId\" : 6,\n  \t\t\"Price\"\t: 2.0,\n  \t\t\"Quantity\":3\n\t}\n\n  ]\n}"
+              "textBody": "{\n  \"CustomerId\": 3,\n  \"Comment\":\"test\",\n  \"Goods\" : [\n    {\n\t\t\"GoodId\" : 12,\n  \t\t\"Price\"\t: 1.5,\n  \t\t\"Quantity\":185\n\t},\n    {\n\t\t\"GoodId\" : 6,\n  \t\t\"Price\"\t: 2.0,\n  \t\t\"Quantity\":3\n\t}\n\n  ]\n}"
             },
             "uri": {
               "query": {
@@ -583,7 +669,7 @@
                 "name": "https",
                 "version": "V11"
               },
-              "host": "localhost:56430",
+              "host": "localhost:61772",
               "path": "/API/Orders/Create"
             },
             "id": "4bed868a-e9ff-4c9e-bcc6-6102b8c190ca",
@@ -593,6 +679,11 @@
                 "enabled": true,
                 "name": "Content-Type",
                 "value": "application/json"
+              },
+              {
+                "enabled": true,
+                "name": "Cookie",
+                "value": "${getEntityById(\"0abf041c-2963-4562-8f73-84bf8b80df69\").\"response\".\"headers\".\"set-cookie\".substring(\"0\", \"\")}"
               }
             ]
           }
@@ -715,33 +806,6 @@
           "entity": {
             "type": "Request",
             "method": {
-              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
-              "name": "GET"
-            },
-            "body": {
-              "formBody": {
-                "overrideContentType": true,
-                "encoding": "application/x-www-form-urlencoded",
-                "items": []
-              },
-              "bodyType": "Text"
-            },
-            "uri": {
-              "scheme": {
-                "secure": true,
-                "name": "https",
-                "version": "V11"
-              }
-            },
-            "id": "f03f6b47-de4e-40d5-9e71-263d67433919",
-            "name": "Request 23",
-            "headers": []
-          }
-        },
-        {
-          "entity": {
-            "type": "Request",
-            "method": {
               "link": "http://tools.ietf.org/html/rfc7231#section-4.3.5",
               "name": "DELETE"
             },
@@ -830,8 +894,8 @@
                 "name": "https",
                 "version": "V11"
               },
-              "host": "localhost:49802",
-              "path": "/API/Values/SeedCustomers/1000"
+              "host": "localhost:61772",
+              "path": "/API/Values/SeedCustomers/100"
             },
             "id": "8018aa7f-6a30-4cb1-bccd-75bcfabfeca7",
             "name": "ValuesSeedCustomers",
@@ -870,7 +934,7 @@
                 "name": "https",
                 "version": "V11"
               },
-              "host": "localhost:59690",
+              "host": "localhost:61772",
               "path": "/API/Values/SeedGoods/100"
             },
             "id": "bc0b3659-9f56-4cda-ac53-f496031903c1",
