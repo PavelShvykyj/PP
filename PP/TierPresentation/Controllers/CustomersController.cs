@@ -2,6 +2,7 @@
 using DTO.APIResourses;
 using DTO.DTO;
 using CoreTier.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PP.Controllers
 {
@@ -15,7 +16,8 @@ namespace PP.Controllers
         {
             _dataService = dataService.CustomerService;
         }
-        
+
+        [Authorize(Policy = "OnlyEmployee")]
         [HttpPost]
         public async Task<IActionResult> Create(CustomerResource CustomerResource)
         {
@@ -27,6 +29,7 @@ namespace PP.Controllers
             return Ok(customerDTO);
         }
 
+        [Authorize(Policy = "OnlyEmployee")]
         [HttpPost]
         [Route("{Id:int}")]
         public async Task<IActionResult> Update(int id, CustomerResource CustomerResource)
@@ -39,6 +42,7 @@ namespace PP.Controllers
             return Ok(customerDTO);
         }
 
+        [Authorize(Policy = "Onlyauthenticated")]
         [HttpGet]
         [Route("{skip:int}/{take:int:max(100)}")]
         public IActionResult GetList(int skip, int take)

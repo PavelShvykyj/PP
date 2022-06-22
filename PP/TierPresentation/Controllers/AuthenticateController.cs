@@ -1,6 +1,7 @@
 ﻿using CoreTier.Interfaces;
 using CoreTier.Services;
 using DTO.APIResourses;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -44,6 +45,7 @@ namespace PP.TierPresentation.Controllers
             return BadRequest();
         }
 
+        [Authorize(Policy = "Onlyauthenticated")]
         [HttpPost]
         public async Task<IActionResult> ChangeEmailAsync(LogInResource logInData)
         {
@@ -55,8 +57,6 @@ namespace PP.TierPresentation.Controllers
             return BadRequest(resoult);
         }
 
-
-
         [HttpPost]
         public async Task<IActionResult> LogOutAsync()
         {
@@ -64,6 +64,7 @@ namespace PP.TierPresentation.Controllers
             return Ok();
         }
 
+        [Authorize(Policy = "OnlyAdmin")]
         [HttpPost]
         public async Task<IActionResult> AddToRoleAsync(SetRoleResource roleData)
         {
@@ -76,7 +77,7 @@ namespace PP.TierPresentation.Controllers
             return Ok();
         }
 
-
+        [Authorize(Policy = "OnlyAdmin")]
         [HttpPost]
         public async Task<IActionResult> RemoveFromRoleAsync(SetRoleResource roleData)
         {

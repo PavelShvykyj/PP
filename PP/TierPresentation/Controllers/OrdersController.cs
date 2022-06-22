@@ -51,18 +51,35 @@ namespace PP.Controllers
             {
                 return BadRequest(ModelState);
             }
+
+            var resoult = await _authorizationService.AuthorizeAsync(
+                                HttpContext.User,
+                                orderdata,
+                                "OwnOrders");
+
+            if (!resoult.Succeeded)
+            {
+                return BadRequest("Only own orders can be created");
+            }
+
+
+
             OrderDTO orderDTO = await _dataService.UpdateAsync(id,orderdata);
             return Ok(orderDTO);
         }
 
+        [Authorize(Policy = "Onlyauthenticated")]
         [HttpGet]
         [Route("{skip:int}/{take:int:max(100)}")]
         public IActionResult GetList(int skip, int take)
         {
             var orderDTOs = _dataService.GetList(take, skip);
+
+
             return Ok(orderDTOs);
         }
 
+        [Authorize(Policy = "Onlyauthenticated")]
         [HttpPost]
         [Route("{Id:int}")]
         public IActionResult Pay()
@@ -70,6 +87,7 @@ namespace PP.Controllers
             return Ok();
         }
 
+        [Authorize(Policy = "Onlyauthenticated")]
         [HttpPost]
         [Route("{Id:int}")]
         public IActionResult Cancel()

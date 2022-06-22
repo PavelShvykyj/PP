@@ -4,6 +4,7 @@ using DTO.DTO;
 using DataTier.Models;
 using Microsoft.AspNetCore.JsonPatch;
 using CoreTier.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PP.Controllers
 {
@@ -18,6 +19,7 @@ namespace PP.Controllers
             _dataService = dataService.GoodService;
         }
 
+        [Authorize(Policy = "OnlyEmployee")]
         [HttpPost]
         public async Task<IActionResult> Create(GoodResource goodResource)
         {
@@ -29,6 +31,7 @@ namespace PP.Controllers
             return Ok(goodDTO);
         }
 
+        [Authorize(Policy = "OnlyEmployee")]
         [HttpPost]
         [Route("{Id:int}/{Price:decimal}")]
         public async Task<IActionResult> SetPrice(ushort id, decimal price)
@@ -37,6 +40,7 @@ namespace PP.Controllers
             return Ok(string.Format("Saved {0} items", count));
         }
 
+        [Authorize(Policy = "OnlyEmployee")]
         [HttpPost]
         [Route("{Id:int}/{Rest:int}")]
         public async Task<IActionResult> SetRest(ushort id, ushort rest)
@@ -44,6 +48,8 @@ namespace PP.Controllers
             var count = await _dataService.SetRestAsync(id, rest);
             return Ok(string.Format("Saved {0} items", count));
         }
+
+        [Authorize(Policy = "OnlyEmployee")]
         [HttpPost]
         public async Task<IActionResult> SetRestToMany(GoodSetRestResouce[] goodResouces) 
         {
@@ -51,6 +57,7 @@ namespace PP.Controllers
             return Ok(string.Format("Saved {0} items", count));
         }
 
+        [Authorize(Policy = "OnlyEmployee")]
         [HttpPost]
         public async Task<IActionResult> SetPriceToMany(GoodSetPriceResouce[] goodResouces)
         {
@@ -58,6 +65,7 @@ namespace PP.Controllers
             return Ok(string.Format("Saved {0} items", count));
         }
 
+        [Authorize(Policy = "OnlyEmployee")]
         [HttpPatch]
         [Route("{Id:int}")]
         public async Task<IActionResult> Update(ushort id, JsonPatchDocument<Good> goodResource)
@@ -70,6 +78,7 @@ namespace PP.Controllers
             return Ok(goodDTO);
         }
 
+        [Authorize(Policy = "Onlyauthenticated")]
         [HttpGet]
         [Route("{skip:int}/{take:int:max(100)}")]
         public IActionResult GetList(int skip, int take)
