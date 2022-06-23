@@ -32,6 +32,8 @@ namespace CoreTier.Services
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _contextAccessor;
 
+        public SignInManager<User> SignInManager { get { return _signInManager; } }
+
         public IdentityService(UserManager<User> userManager,
                                SignInManager<User> signInManager,
                                RoleManager<IdentityRole> roleManager,
@@ -210,6 +212,41 @@ namespace CoreTier.Services
             }
             return await _userManager.RemoveFromRoleAsync((User)resoult.User, roleData.RoleName);
         }
+
+        public async Task<SignInResult> SignInGoogleAsync()
+        {
+            var info =  await _signInManager.GetExternalLoginInfoAsync();
+            if (info == null) 
+            {
+                return SignInResult.Failed;
+            }
+            var resoult = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false);
+            if (resoult.Succeeded)
+            {
+                return resoult;
+            }
+
+            var randomPass = "GP"+Guid.NewGuid().ToString()+"!";
+            var signInData = new SignInResource()
+            {
+                Email = info.Principal.FindFirstValue(ClaimTypes.Email),
+                Name = info.Principal.FindFirstValue(ClaimTypes.Email),
+                Password = randomPass,
+                PasswordConfirm = randomPass
+
+            };
+
+            var idResoult = await SignUpAsync(signInData);
+            if (!idResoult.Succeeded) 
+            {
+                return SignInResult.Failed;
+            }
+
+            User user = await _userManager.FindByEmailAsync(signInData.Email);
+            await _userManager.AddLoginAsync(user, info);
+            await _signInManager.SignInAsync(user, false);
+            return SignInResult.Success;
         }
     }
+}
 

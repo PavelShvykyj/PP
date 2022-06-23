@@ -12,6 +12,8 @@ using DataTier.Models;
 using CoreTier.CustomRequirement;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,7 +43,19 @@ builder.Services.AddIdentity<User, IdentityRole>(
     })
                 .AddEntityFrameworkStores<ApplicationContext>();
 
-builder.Services.ConfigureApplicationCookie(options =>
+builder.Services.AddAuthentication(
+    //options => {
+    //    options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+    //    }
+    )
+    .AddGoogle("Google", 
+        options => {
+            options.ClientId = "361169287932-lqsgj3veumm7rse27deuuq1hdvrjk5d8.apps.googleusercontent.com";
+            options.ClientSecret = "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";
+            options.SignInScheme = IdentityConstants.ExternalScheme;
+        });
+
+    builder.Services.ConfigureApplicationCookie(options =>
     {
         options.Cookie.Name = "MyAuth.Cookie";
         options.ExpireTimeSpan = TimeSpan.FromSeconds(1800);

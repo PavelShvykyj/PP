@@ -20,7 +20,8 @@ namespace PP.TierPresentation.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SignUpAsync(SignInResource signInData) {
+        public async Task<IActionResult> SignUpAsync(SignInResource signInData)
+        {
 
 
             var resoult = await _identityService.SignUpAsync(signInData);
@@ -30,7 +31,7 @@ namespace PP.TierPresentation.Controllers
             }
 
             return BadRequest(resoult.Errors);
-        
+
         }
 
         [HttpPost]
@@ -68,12 +69,12 @@ namespace PP.TierPresentation.Controllers
         [HttpPost]
         public async Task<IActionResult> AddToRoleAsync(SetRoleResource roleData)
         {
-            if (!ModelState.IsValid) 
+            if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState); 
+                return BadRequest(ModelState);
             }
             IdentityResult res = await _identityService.AddToRoleAsync(roleData);
-            if(!res.Succeeded) return BadRequest(res.Errors);
+            if (!res.Succeeded) return BadRequest(res.Errors);
             return Ok();
         }
 
@@ -90,5 +91,28 @@ namespace PP.TierPresentation.Controllers
             return Ok();
         }
 
+        [AllowAnonymous]
+        [HttpGet]
+        public IActionResult GoogleLogin()
+        {
+            string redirectUrl = "https://localhost:58888/API/Authenticate/GoogleResponse";
+                //Url.Action("GoogleResponse","Authenticate");
+            var properties = _identityService.SignInManager
+                    .ConfigureExternalAuthenticationProperties("Google", redirectUrl);
+
+            return new ChallengeResult("Google", properties);
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task<IActionResult> GoogleResponse()
+        {
+            var resoult = await _identityService.SignInGoogleAsync();
+            if (resoult.Succeeded)
+            {
+                return Ok(HttpContext.Response.Headers.SetCookie);
+            }
+            return BadRequest("Access denied");
+        }
     }
 }
