@@ -50,8 +50,8 @@ builder.Services.AddAuthentication(
     )
     .AddGoogle("Google", 
         options => {
-            options.ClientId = "361169287932-lqsgj3veumm7rse27deuuq1hdvrjk5d8.apps.googleusercontent.com";
-            options.ClientSecret = "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";
+            options.ClientId = "";
+            options.ClientSecret = "";
             options.SignInScheme = IdentityConstants.ExternalScheme;
         });
 
