@@ -19,7 +19,7 @@ namespace PP.Controllers
             _authorizationService = authorizationService;
         }
 
-        
+        [Authorize(Policy = "OnlyAuthenticated")]
         [HttpPost]
         public async Task<IActionResult> Create(OrderSetResource orderdata)
         {
@@ -43,6 +43,7 @@ namespace PP.Controllers
             return Ok(orderDTO);
         }
 
+        [Authorize(Policy = "OnlyAuthenticated")]
         [HttpPut]
         [Route("{Id:int}")]
         public async Task<IActionResult> Update(OrderSetResource orderdata, int id)
