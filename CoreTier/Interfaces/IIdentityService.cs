@@ -16,11 +16,12 @@ namespace CoreTier.Interfaces
         Task<IdentityResult> SignUpAsync(SignInResource signInData);
         Task<SignInResult> SignInAsync(LogInResource logInData);
         Task<SignInResult> SignInGoogleAsync();
-
+        Task SendConfirmation(ClaimsPrincipal user);
         Task SignOutAsync();
         Task<IdentityResult> AddToRoleAsync(SetRoleResource roleData);
         Task<IdentityResult> RemoveFromRoleAsync(SetRoleResource roleData);
         Task<IdentityResult> ChangeEmailAsync(LogInResource logInResource, ClaimsPrincipal loggedUser);
         Task<IdentityResult> SeedIdentityDataBaseAsync();
+        Task<IdentityResult> FinishEmailConfirm(string userId, string code);
     }
 }

@@ -5,6 +5,7 @@ using DataTier;
 using PP.Fake;
 using CoreTier.MappingProfiles;
 using CoreTier.Services;
+using CoreTier.Configs;
 using Repository;
 using Repository.Interfaces;
 using CoreTier.Interfaces;
@@ -14,6 +15,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
+using PP.Extentions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,19 +43,20 @@ builder.Services.AddIdentity<User, IdentityRole>(
 
         options.User.RequireUniqueEmail = true;
     })
-                .AddEntityFrameworkStores<ApplicationContext>();
+                .AddEntityFrameworkStores<ApplicationContext>()
+                .AddDefaultTokenProviders();
 
 builder.Services.AddAuthentication(
     //options => {
     //    options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
     //    }
-    )
-    .AddGoogle("Google", 
-        options => {
-            options.ClientId = "";
-            options.ClientSecret = "";
-            options.SignInScheme = IdentityConstants.ExternalScheme;
-        });
+    );
+    //.AddGoogle("Google", 
+    //    options => {
+    //        options.ClientId = "ClientId";
+    //        options.ClientSecret = "ClientSecret";
+    //        options.SignInScheme = IdentityConstants.ExternalScheme;
+    //    });
 
     builder.Services.ConfigureApplicationCookie(options =>
     {
@@ -66,8 +69,14 @@ builder.Services.AddAuthentication(
         };
     });
 
-
-
+builder.Services.AddEmailSevice(options => {
+    options.SMTP = "smtp.ukr.net";
+    options.POP = "";
+    options.Password = "xTUusw8HDUpRShEi";
+    options.Address = "ppsender@ukr.net";
+    options.SMTPPort = 465;
+    options.Login = "ppsender@ukr.net";
+}); 
 
 builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
 builder.Services.AddScoped<IDataService,DataManager>();

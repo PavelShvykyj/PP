@@ -31,6 +31,7 @@ namespace CoreTier.Services
         private readonly IDataService _dataService;
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _contextAccessor;
+        private readonly IEmailService _emailService;
 
         public SignInManager<User> SignInManager { get { return _signInManager; } }
 
@@ -39,7 +40,8 @@ namespace CoreTier.Services
                                RoleManager<IdentityRole> roleManager,
                                IDataService dataService,
                                IMapper mapper,
-                               IHttpContextAccessor contextAccessor
+                               IHttpContextAccessor contextAccessor,
+                               IEmailService emailService
 
             )
         {
@@ -49,6 +51,7 @@ namespace CoreTier.Services
             _dataService = dataService;
             _mapper = mapper;
             _contextAccessor = contextAccessor;
+            _emailService = emailService;
         }
         public async Task<IdentityResult> ChangeEmailAsync(LogInResource logInResource, ClaimsPrincipal loggedUser)
         {
@@ -83,6 +86,10 @@ namespace CoreTier.Services
             var customer = _mapper.Map<SignInResource, Customer>(signInData);
             user.Customer = customer;
             var resoult  =  await _userManager.CreateAsync(user, signInData.Password);
+            
+            //await SendConfirmation(user);
+
+
             return resoult;
         }
         public async Task<SignInResult> SignInAsync(LogInResource logInData) 
@@ -212,7 +219,16 @@ namespace CoreTier.Services
             }
             return await _userManager.RemoveFromRoleAsync((User)resoult.User, roleData.RoleName);
         }
+        public async Task SendConfirmation(ClaimsPrincipal loggedUser) 
+        {
+            var user = await _userManager.GetUserAsync(loggedUser);
 
+            string callBackUrl = await GetEmailConfirmCallBackURLAsync(user);
+            string emailAddres = user.Email;
+            string emailSubject = "Confirm email in PP learn project";
+            string emailBody = $"<a href='{callBackUrl}'>link</a>";
+            await _emailService.SendEmailAsync(emailAddres, emailSubject, emailBody);
+        }
         public async Task<SignInResult> SignInGoogleAsync()
         {
             var info =  await _signInManager.GetExternalLoginInfoAsync();
@@ -247,6 +263,22 @@ namespace CoreTier.Services
             await _signInManager.SignInAsync(user, false);
             return SignInResult.Success;
         }
+
+        public async Task<IdentityResult> FinishEmailConfirm(string userId,string code) 
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            var result = await _userManager.ConfirmEmailAsync(user, code);
+            return result;
+        }
+
+
+        private async Task<string> GetEmailConfirmCallBackURLAsync(User user) 
+        {
+            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            var callbackUrl = $"https://localhost:50277/API/Authenticate/EmailConfirm/{user.Id}/{code}";
+            return callbackUrl;
+        }
+
     }
 }
 

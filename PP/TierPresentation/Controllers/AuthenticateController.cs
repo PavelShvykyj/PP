@@ -96,7 +96,7 @@ namespace PP.TierPresentation.Controllers
         public IActionResult GoogleLogin()
         {
             string redirectUrl = "https://localhost:58888/API/Authenticate/GoogleResponse";
-                //Url.Action("GoogleResponse","Authenticate");
+             //   Url.Action("GoogleResponse","Authenticate");
             var properties = _identityService.SignInManager
                     .ConfigureExternalAuthenticationProperties("Google", redirectUrl);
 
@@ -113,6 +113,24 @@ namespace PP.TierPresentation.Controllers
                 return Ok(HttpContext.Response.Headers.SetCookie);
             }
             return BadRequest("Access denied");
+        }
+
+        [Authorize(Policy = "OnlyAuthenticated")]
+        [HttpGet]
+        public async Task<IActionResult> ConfirmEmail() {
+
+            
+            await _identityService.SendConfirmation(HttpContext.User);
+
+            return Ok();
+        }
+
+        [HttpGet]
+        [Route("{userId}/{code}")]
+        public async Task<IActionResult> EmailConfirm(string userId, string code) {
+
+            await _identityService.FinishEmailConfirm(userId, code);
+            return Ok();
         }
     }
 }
