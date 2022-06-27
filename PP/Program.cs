@@ -50,15 +50,16 @@ builder.Services.AddAuthentication(
     //options => {
     //    options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
     //    }
-    );
-    //.AddGoogle("Google", 
-    //    options => {
-    //        options.ClientId = "ClientId";
-    //        options.ClientSecret = "ClientSecret";
-    //        options.SignInScheme = IdentityConstants.ExternalScheme;
-    //    });
+    )
+    .AddGoogle("Google",
+        options =>
+        {
+            options.ClientId = builder.Configuration["Google:ClientId"];
+            options.ClientSecret = builder.Configuration["Google:ClientSecret"];
+            options.SignInScheme = IdentityConstants.ExternalScheme;
+        });
 
-    builder.Services.ConfigureApplicationCookie(options =>
+builder.Services.ConfigureApplicationCookie(options =>
     {
         options.Cookie.Name = "MyAuth.Cookie";
         options.ExpireTimeSpan = TimeSpan.FromSeconds(1800);
@@ -70,12 +71,12 @@ builder.Services.AddAuthentication(
     });
 
 builder.Services.AddEmailSevice(options => {
-    options.SMTP = "smtp.ukr.net";
+    options.SMTP = builder.Configuration["Email:SMTP"];
     options.POP = "";
-    options.Password = "xTUusw8HDUpRShEi";
-    options.Address = "ppsender@ukr.net";
+    options.Password = builder.Configuration["Email:Password"];
+    options.Address = builder.Configuration["Email:Address"];
     options.SMTPPort = 465;
-    options.Login = "ppsender@ukr.net";
+    options.Login = builder.Configuration["Email:Address"]; 
 }); 
 
 builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();

@@ -86,10 +86,6 @@ namespace CoreTier.Services
             var customer = _mapper.Map<SignInResource, Customer>(signInData);
             user.Customer = customer;
             var resoult  =  await _userManager.CreateAsync(user, signInData.Password);
-            
-            //await SendConfirmation(user);
-
-
             return resoult;
         }
         public async Task<SignInResult> SignInAsync(LogInResource logInData) 
@@ -219,12 +215,12 @@ namespace CoreTier.Services
             }
             return await _userManager.RemoveFromRoleAsync((User)resoult.User, roleData.RoleName);
         }
-        public async Task SendConfirmation(ClaimsPrincipal loggedUser) 
+        public async Task SendConfirmation(string callBackUrl, string email) 
         {
-            var user = await _userManager.GetUserAsync(loggedUser);
+            
 
-            string callBackUrl = await GetEmailConfirmCallBackURLAsync(user);
-            string emailAddres = user.Email;
+            
+            string emailAddres = email;
             string emailSubject = "Confirm email in PP learn project";
             string emailBody = $"<a href='{callBackUrl}'>link</a>";
             await _emailService.SendEmailAsync(emailAddres, emailSubject, emailBody);
@@ -263,22 +259,26 @@ namespace CoreTier.Services
             await _signInManager.SignInAsync(user, false);
             return SignInResult.Success;
         }
-
         public async Task<IdentityResult> FinishEmailConfirm(string userId,string code) 
         {
             var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return IdentityResult.Failed();
+            }
             var result = await _userManager.ConfirmEmailAsync(user, code);
             return result;
         }
-
-
-        private async Task<string> GetEmailConfirmCallBackURLAsync(User user) 
+        public async Task<Dictionary<string,string>> GetConfirmUrlOptionsAsync(ClaimsPrincipal loggedUser) 
         {
+            var user = await _userManager.GetUserAsync(loggedUser);
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            var callbackUrl = $"https://localhost:50277/API/Authenticate/EmailConfirm/{user.Id}/{code}";
-            return callbackUrl;
+            Dictionary<string, string> opts = new Dictionary<string, string>();
+            opts.Add("userId", user.Id);
+            opts.Add("code", code);
+            opts.Add("email", user.Email);
+            return opts; 
         }
-
     }
 }
 

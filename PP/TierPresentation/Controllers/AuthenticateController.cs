@@ -27,7 +27,13 @@ namespace PP.TierPresentation.Controllers
             var resoult = await _identityService.SignUpAsync(signInData);
             if (resoult.Succeeded)
             {
-                return Ok();
+                await _identityService.SignInAsync(new LogInResource() 
+                    {
+                       Email = signInData.Email,
+                       Password = signInData.Password,
+                       RememberMe = false
+                    });
+                return RedirectToAction("GetConfirmLink");
             }
 
             return BadRequest(resoult.Errors);
@@ -95,8 +101,9 @@ namespace PP.TierPresentation.Controllers
         [HttpGet]
         public IActionResult GoogleLogin()
         {
-            string redirectUrl = "https://localhost:58888/API/Authenticate/GoogleResponse";
-             //   Url.Action("GoogleResponse","Authenticate");
+            //string redirectUrl = "https://localhost:50509/API/Authenticate/GoogleResponse";
+            string redirectUrl =  Url.Action("GoogleResponse", "Authenticate");
+            
             var properties = _identityService.SignInManager
                     .ConfigureExternalAuthenticationProperties("Google", redirectUrl);
 
@@ -117,16 +124,19 @@ namespace PP.TierPresentation.Controllers
 
         [Authorize(Policy = "OnlyAuthenticated")]
         [HttpGet]
-        public async Task<IActionResult> ConfirmEmail() {
-
-            
-            await _identityService.SendConfirmation(HttpContext.User);
-
+        public async Task<IActionResult> GetConfirmLink() {
+            var callbackUrlOptions = await _identityService.GetConfirmUrlOptionsAsync(HttpContext.User);
+            var callbackUrl = Url.Action(
+                       "EmailConfirm",
+                       "Authenticate",
+                       new { userId = callbackUrlOptions["userId"], code = callbackUrlOptions["code"] },
+                       protocol: HttpContext.Request.Scheme);
+            await _identityService.SendConfirmation(callbackUrl, callbackUrlOptions["email"]);
             return Ok();
         }
 
         [HttpGet]
-        [Route("{userId}/{code}")]
+        //[Route("{userId}/{code}")]
         public async Task<IActionResult> EmailConfirm(string userId, string code) {
 
             await _identityService.FinishEmailConfirm(userId, code);
