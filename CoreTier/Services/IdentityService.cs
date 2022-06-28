@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CoreTier.Configs;
 using CoreTier.Interfaces;
 using DataTier.Models;
 using DTO.APIResourses;
@@ -20,14 +21,11 @@ namespace CoreTier.Services
         public IdentityUser User { get; set; }
         public bool IsChecked { get; set; }
     }
-
-
     public class IdentityService : IIdentityService
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-
         private readonly IDataService _dataService;
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _contextAccessor;
@@ -72,7 +70,7 @@ namespace CoreTier.Services
 
         public async Task<IdentityResult> SignUpAsync(SignInResource signInData) {
             var user = await _userManager.FindByEmailAsync(signInData.Email);
-            var exists = (user is not null);// || (_dataService.CustomerService.IsEmailExists(signInData.Email)); 
+            var exists = (user is not null);
             if (exists)
             {
                 return IdentityResult.Failed(new[] {
@@ -81,12 +79,11 @@ namespace CoreTier.Services
                         }
                 });
             }
-            /// mapper
             user = _mapper.Map<SignInResource, User>(signInData);
             var customer = _mapper.Map<SignInResource, Customer>(signInData);
             user.Customer = customer;
-            var resoult  =  await _userManager.CreateAsync(user, signInData.Password);
-            return resoult;
+            var result  =  await _userManager.CreateAsync(user, signInData.Password);
+            return result;
         }
         public async Task<SignInResult> SignInAsync(LogInResource logInData) 
         {
@@ -97,13 +94,13 @@ namespace CoreTier.Services
                 return SignInResult.Failed;
             }
 
-            var resoult =  await _signInManager
+            var result =  await _signInManager
                                 .PasswordSignInAsync(
                                      user,
                                      logInData.Password,
                                      logInData.RememberMe,
                                      false);
-            return resoult;
+            return result;
         }
         public async Task SignOutAsync()
         {
@@ -123,53 +120,47 @@ namespace CoreTier.Services
         public  async Task<IdentityResult> SeedIdentityDataBaseAsync() 
         {
 
-            var adminRoleName = "Admin";
-            var managerRoleName = "Manager";
-            var defoultAdminName = adminRoleName;
-            var defoultAdminMail = "Developers@Mail.Com";
-            var defoultAdminPass = "StroNgSecu12rityPass!";
-
-            var resoult = await CreateRoleAsync(adminRoleName);
-            if (!resoult.Succeeded)
+            var result = await CreateRoleAsync(Constants.AdminRoleName);
+            if (!result.Succeeded)
             {
-                return resoult;
+                return result;
             }
-            resoult = await CreateRoleAsync(managerRoleName);
-            if (!resoult.Succeeded)
+            result = await CreateRoleAsync(Constants.ManagerRoleName);
+            if (!result.Succeeded)
             {
-                return resoult;
+                return result;
             }
 
-            var adminUser = await _userManager.FindByEmailAsync(defoultAdminMail);
+            var adminUser = await _userManager.FindByEmailAsync(Constants.DefaultAdminMail);
             if (adminUser == null) 
             {
                 Customer customerAdmin = new Customer()
                 {
-                    Email = defoultAdminMail,
-                    Name  = defoultAdminName
+                    Email = Constants.DefaultAdminMail,
+                    Name  = Constants.DefaultAdminName
                 };
                 
                 adminUser = new User()
                 {
                     Customer = customerAdmin,
-                    Email = defoultAdminMail,
-                    UserName = defoultAdminName
+                    Email = Constants.DefaultAdminMail,
+                    UserName = Constants.DefaultAdminName
                 };
 
-                resoult = await _userManager.CreateAsync(adminUser,defoultAdminPass);
-                if (!resoult.Succeeded)
+                result = await _userManager.CreateAsync(adminUser, Constants.DefaultAdminPass);
+                if (!result.Succeeded)
                 {
-                    return resoult;
+                    return result;
                 }
             }
 
-            var isAdmin = await _userManager.IsInRoleAsync(adminUser, adminRoleName);
+            var isAdmin = await _userManager.IsInRoleAsync(adminUser, Constants.AdminRoleName);
             if (!isAdmin)
             {
-               resoult = await _userManager.AddToRoleAsync(adminUser, adminRoleName);
-                if (!resoult.Succeeded)
+               result = await _userManager.AddToRoleAsync(adminUser, Constants.AdminRoleName);
+                if (!result.Succeeded)
                 {
-                    return resoult;
+                    return result;
                 }
 
             }
@@ -177,18 +168,18 @@ namespace CoreTier.Services
         }
         internal async Task<ICheckedRoleData> CheckRoleData(SetRoleResource roleData) 
         {
-            var resoult = new CheckedRoleData();
-            resoult.User = await _userManager.FindByEmailAsync(roleData.Email);
-            resoult.Role = _roleManager.Roles
+            var result = new CheckedRoleData();
+            result.User = await _userManager.FindByEmailAsync(roleData.Email);
+            result.Role = _roleManager.Roles
                 .FirstOrDefault(r => r.Name == roleData.RoleName);
 
-            resoult.IsChecked = (resoult.User != null) & (resoult.Role != null);
-            return resoult;
+            result.IsChecked = (result.User != null) & (result.Role != null);
+            return result;
         }
         public async Task<IdentityResult> AddToRoleAsync(SetRoleResource roleData) 
         {
-            var resoult = await CheckRoleData(roleData);
-            if (!resoult.IsChecked)
+            var result = await CheckRoleData(roleData);
+            if (!result.IsChecked)
             {
                 return IdentityResult.Failed(new[] 
                 { 
@@ -198,12 +189,12 @@ namespace CoreTier.Services
                     }
                 } );
             }
-            return await _userManager.AddToRoleAsync((User)resoult.User, roleData.RoleName);
+            return await _userManager.AddToRoleAsync((User)result.User, roleData.RoleName);
         }
         public async Task<IdentityResult> RemoveFromRoleAsync(SetRoleResource roleData) 
         {
-            var resoult = await CheckRoleData(roleData);
-            if (!resoult.IsChecked)
+            var result = await CheckRoleData(roleData);
+            if (!result.IsChecked)
             {
                 return IdentityResult.Failed(new[]
                 {
@@ -213,13 +204,10 @@ namespace CoreTier.Services
                     }
                 });
             }
-            return await _userManager.RemoveFromRoleAsync((User)resoult.User, roleData.RoleName);
+            return await _userManager.RemoveFromRoleAsync((User)result.User, roleData.RoleName);
         }
         public async Task SendConfirmation(string callBackUrl, string email) 
         {
-            
-
-            
             string emailAddres = email;
             string emailSubject = "Confirm email in PP learn project";
             string emailBody = $"<a href='{callBackUrl}'>link</a>";
@@ -232,10 +220,10 @@ namespace CoreTier.Services
             {
                 return SignInResult.Failed;
             }
-            var resoult = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false);
-            if (resoult.Succeeded)
+            var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false);
+            if (result.Succeeded)
             {
-                return resoult;
+                return result;
             }
 
             var randomPass = "GP"+Guid.NewGuid().ToString()+"!";
@@ -248,8 +236,8 @@ namespace CoreTier.Services
 
             };
 
-            var idResoult = await SignUpAsync(signInData);
-            if (!idResoult.Succeeded) 
+            var idResult = await SignUpAsync(signInData);
+            if (!idResult.Succeeded) 
             {
                 return SignInResult.Failed;
             }

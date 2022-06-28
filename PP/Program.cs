@@ -46,11 +46,7 @@ builder.Services.AddIdentity<User, IdentityRole>(
                 .AddEntityFrameworkStores<ApplicationContext>()
                 .AddDefaultTokenProviders();
 
-builder.Services.AddAuthentication(
-    //options => {
-    //    options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
-    //    }
-    )
+builder.Services.AddAuthentication()
     .AddGoogle("Google",
         options =>
         {
@@ -82,7 +78,7 @@ builder.Services.AddEmailSevice(options => {
 builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
 builder.Services.AddScoped<IDataService,DataManager>();
 builder.Services.AddScoped<IIdentityService,IdentityService>();
-builder.Services.AddHostedService<IdentityHosedService>();
+builder.Services.AddHostedService<IdentityHostedService>();
 builder.Services.AddTransient<IAuthorizationHandler, OwnOrdersHandler>();
 builder.Services.AddAuthorization(options =>
 {

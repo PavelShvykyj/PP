@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace CoreTier.Services
 {
-    public class IdentityHosedService : IHostedService
+    public class IdentityHostedService : IHostedService
     {
         private readonly IServiceProvider _serviceProvider;
 
-        public IdentityHosedService(IServiceProvider serviceProvider)
+        public IdentityHostedService(IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
         }

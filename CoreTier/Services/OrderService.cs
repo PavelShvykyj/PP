@@ -35,18 +35,6 @@ namespace CoreTier.Services
             _unitOfWork.Orders.Create(order);
             await _unitOfWork.SaveAsync();
             return _mapper.Map<Order, OrderDTO>(order);
-
-
-
-            //order.Goods.Clear();
-            //_unitOfWork.Orders.Create(order);
-            //await _unitOfWork.SaveAsync();
-            //_ = orderdata.Goods.Select(r => { r.OrderId = order.Id; return r; }).ToList();
-            //OrderRows[] orderGoods = _mapper.Map<OrderGoodsSetResource[], OrderRows[]>(orderdata.Goods.ToArray());
-            //_unitOfWork.Orders.AddGoods(orderGoods);
-            //await _unitOfWork.SaveAsync();
-            //order = _unitOfWork.Orders.GetOrderWithProperties(order.Id);
-            //return _mapper.Map<Order, OrderDTO>(order);
         }
         public OrderDTO Get(int id)
         {

@@ -136,7 +136,6 @@ namespace PP.TierPresentation.Controllers
         }
 
         [HttpGet]
-        //[Route("{userId}/{code}")]
         public async Task<IActionResult> EmailConfirm(string userId, string code) {
 
             await _identityService.FinishEmailConfirm(userId, code);
