@@ -31,8 +31,8 @@ namespace CoreTier.Services
             orderdata.Goods =orderdata.Goods
                            .GroupBy(r=>new {r.GoodId, r.Price })
                            .Select(g=> new OrderGoodsSetResource() {
-                               GoodId = g.First().GoodId,
-                               Price = g.First().Price,
+                               GoodId = g.Key.GoodId,
+                               Price = g.Key.Price,
                                Quantity = g.Sum(i=> i.Quantity)})
                            .ToList();
 
