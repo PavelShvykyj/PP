@@ -24,11 +24,18 @@ namespace CoreTier.Services
         }
         public async Task<OrderDTO> CreateAsync(OrderSetResource orderdata)
         {
-            
+
             /// ----------- Importent group order goods by good id , summ quantaty
             /// good id + price -- must be unique
             /// else mapping rows cant work
-            
+            orderdata.Goods =orderdata.Goods
+                           .GroupBy(r=>new {r.GoodId, r.Price })
+                           .Select(g=> new OrderGoodsSetResource() {
+                               GoodId = g.First().GoodId,
+                               Price = g.First().Price,
+                               Quantity = g.Sum(i=> i.Quantity)})
+                           .ToList();
+
             Order order = new Order();
             _mapper.Map<OrderSetResource, Order>(orderdata, order);
             _ = order.Goods.Select(r => { r.Order = order; return r; }).ToList();
