@@ -21,7 +21,6 @@ namespace DataTier.ModelsConfiguration
                 .IsRequired()
                 .HasColumnType("money");
 
-
             builder.Property(g => g.Rest)
                 .HasDefaultValue(0)
                 .IsRequired()
