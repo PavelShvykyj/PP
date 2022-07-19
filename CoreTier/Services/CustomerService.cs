@@ -42,6 +42,11 @@ namespace CoreTier.Services
             return CustomerDTO;
         }
 
+        public bool IsEmailExists(string email) {
+            Customer? customer = _unitOfWork.Customers.GetCustomerByEmail(email);
+            return customer is null ? false : true;
+        }
+
         public CustomerDTO Get(int id)
         {
             Customer Customer = _unitOfWork.Customers.Get(id);

@@ -1,10 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using DataTier.Models;
-using DataTier.Modelsconfiguration;
+using DataTier.ModelsConfiguration;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace DataTier
 {
-    public class ApplicationContext : DbContext
+
+    public  class ApplicationContext : IdentityDbContext<User>
     {
         public DbSet<Good> Goods { get; set; }
         public DbSet<Customer> Customers { get; set; }
@@ -27,7 +29,12 @@ namespace DataTier
             modelBuilder.ApplyConfiguration(new CustomerConfiguration());
             modelBuilder.ApplyConfiguration(new OrderConfiguration());
             modelBuilder.ApplyConfiguration(new OrderRowsConfiguration());
-            
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
+            // ------  IMPORTENT -------> must tell identity to configure its entities
+            // ------  else have error
+            // The entity type IdentityUserLogin of string require a primary key to be defined
+            base.OnModelCreating(modelBuilder);
+
         }
     }
 }

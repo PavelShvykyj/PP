@@ -4,6 +4,7 @@ using DataTier;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataTier.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20220616115700_identity-init")]
+    partial class identityinit
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,7 +34,7 @@ namespace DataTier.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -155,10 +157,8 @@ namespace DataTier.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
@@ -199,9 +199,6 @@ namespace DataTier.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CustomerId")
-                        .IsUnique();
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -347,6 +344,18 @@ namespace DataTier.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("DataTier.Models.Customer", b =>
+                {
+                    b.HasOne("DataTier.Models.User", "User")
+                        .WithOne("Customer")
+                        .HasForeignKey("DataTier.Models.Customer", "Email")
+                        .HasPrincipalKey("DataTier.Models.User", "Email")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("DataTier.Models.Order", b =>
                 {
                     b.HasOne("DataTier.Models.Customer", "Customer")
@@ -375,17 +384,6 @@ namespace DataTier.Migrations
                     b.Navigation("Good");
 
                     b.Navigation("Order");
-                });
-
-            modelBuilder.Entity("DataTier.Models.User", b =>
-                {
-                    b.HasOne("DataTier.Models.Customer", "Customer")
-                        .WithOne("User")
-                        .HasForeignKey("DataTier.Models.User", "CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Customer");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -439,15 +437,15 @@ namespace DataTier.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("DataTier.Models.Customer", b =>
-                {
-                    b.Navigation("User")
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("DataTier.Models.Order", b =>
                 {
                     b.Navigation("Goods");
+                });
+
+            modelBuilder.Entity("DataTier.Models.User", b =>
+                {
+                    b.Navigation("Customer")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

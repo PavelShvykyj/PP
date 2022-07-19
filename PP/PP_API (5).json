@@ -12,6 +12,329 @@
           "entity": {
             "type": "Request",
             "method": {
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+              "name": "GET"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": []
+              },
+              "scheme": {
+                "secure": true,
+                "name": "https",
+                "version": "V11"
+              },
+              "host": "localhost:52372",
+              "path": "/API/Auth/AccesTest"
+            },
+            "id": "da0f0b10-89b9-4f7c-b00f-a3813213a5de",
+            "name": "AuthAccesTest",
+            "headers": [
+              {
+                "enabled": true,
+                "name": "Cookie",
+                "value": ".AspNetCore.Cookies=CfDJ8H5pB_bFGYFGljjSRmTZ9ZQmb7Y2F9D8FFM5nyztujNDxmnYKDcFLey4PGkiXhBG16ytaFOWHkyrHJ5iAmik0q1ae4JtCxl5yh-pk45EG_g9peQ9fI0gTNnIA1ES4b6PZ5AMbZmKxuEcN1L22uFw5oUtqu_LqbxlrP5MSNeIMBoseWd1tAVBbFSSpIE1_CiBiudUJD0JmaJOzdZjBBTf6bP2lPpaBii11yHfxW70f_HSR6ixHVcyqdYTMHk6wSo447xqeRQReamctx9YyeBexmTIknNK2jzrlrUuxpI3U2se43xQj2a3izKZIwI7pRpNjjfY0NptZwx28o9fp5l6TWVzupFaoPAV3RKT7rS3aNeTFyRWjQ4WL4u69D8VyOPSLA5k2GI2ujpbSjOl1TNf1pI; path=/; secure; samesite=lax; httponly"
+              }
+            ]
+          }
+        },
+        {
+          "entity": {
+            "type": "Request",
+            "method": {
+              "requestBody": true,
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+              "name": "POST"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text",
+              "textBody": "{\n  \"Email\":\"Olga@Email.com\",\n  \"RoleName\":\"Manager\"\n}"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": []
+              },
+              "scheme": {
+                "secure": true,
+                "name": "https",
+                "version": "V11"
+              },
+              "host": "localhost:61772",
+              "path": "/API/Authenticate/AddToRole"
+            },
+            "id": "bde1db47-16e1-47b8-88b1-60d1912b1c4d",
+            "name": "AuthAddToRole",
+            "headers": [
+              {
+                "enabled": true,
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        },
+        {
+          "entity": {
+            "type": "Request",
+            "method": {
+              "requestBody": true,
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+              "name": "POST"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text",
+              "textBody": "{\n  \"Email\":\"Misha_1@Email.com\",\n  \"Password\":\"AAbb333!\",\n  \"RememberMe\":\"true\"\n}"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": []
+              },
+              "scheme": {
+                "secure": true,
+                "name": "https",
+                "version": "V11"
+              },
+              "host": "localhost:57145",
+              "path": "/API/Authenticate/ChangeEmail"
+            },
+            "id": "bd7de3be-955a-4919-807e-2603915d4e7b",
+            "name": "AuthChangeEmail",
+            "headers": [
+              {
+                "enabled": true,
+                "name": "Cookie",
+                "value": "${getEntityById(\"0abf041c-2963-4562-8f73-84bf8b80df69\").\"response\".\"headers\".\"set-cookie\".substring(\"0\", \"\")}"
+              },
+              {
+                "enabled": true,
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        },
+        {
+          "entity": {
+            "type": "Request",
+            "method": {
+              "requestBody": true,
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+              "name": "POST"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": []
+              },
+              "scheme": {
+                "secure": true,
+                "name": "https",
+                "version": "V11"
+              },
+              "host": "localhost:59690",
+              "path": "/API/Authenticate/LogOut"
+            },
+            "id": "f03f6b47-de4e-40d5-9e71-263d67433919",
+            "name": "AuthLogOut",
+            "headers": [
+              {
+                "enabled": true,
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        },
+        {
+          "entity": {
+            "type": "Request",
+            "method": {
+              "requestBody": true,
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+              "name": "POST"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text",
+              "textBody": "{\n  \"Email\":\"Misha@Email.com\",\n  \"Password\":\"BBaa333!\",\n  \"RememberMe\":\"true\"\n}"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": []
+              },
+              "scheme": {
+                "secure": true,
+                "name": "https",
+                "version": "V11"
+              },
+              "host": "localhost:61772",
+              "path": "/API/Authenticate/LogIn"
+            },
+            "id": "0abf041c-2963-4562-8f73-84bf8b80df69",
+            "name": "AuthLogin",
+            "headers": [
+              {
+                "enabled": true,
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        },
+        {
+          "entity": {
+            "type": "Request",
+            "method": {
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.1",
+              "name": "GET"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text",
+              "textBody": "{\n  \"name\":\"User\"\n}"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": []
+              },
+              "scheme": {
+                "secure": true,
+                "name": "https",
+                "version": "V11"
+              },
+              "host": "localhost:58914",
+              "path": "/API/Auth/LoginInfo"
+            },
+            "id": "d7de7c50-2cdd-4b42-a34d-1db6aa5b556f",
+            "name": "AuthLoginInfo",
+            "headers": []
+          }
+        },
+        {
+          "entity": {
+            "type": "Request",
+            "method": {
+              "requestBody": true,
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+              "name": "POST"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text",
+              "textBody": "{\n  \"Email\":\"Developers@Mail.Com\",\n  \"RoleName\":\"Manager\"\n}"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": []
+              },
+              "scheme": {
+                "secure": true,
+                "name": "https",
+                "version": "V11"
+              },
+              "host": "localhost:59690",
+              "path": "/API/Authenticate/RemoveFromRole"
+            },
+            "id": "c76b0674-22f7-4c3b-b11c-952269b31961",
+            "name": "AuthRemoveFromRole",
+            "headers": [
+              {
+                "enabled": true,
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        },
+        {
+          "entity": {
+            "type": "Request",
+            "method": {
+              "requestBody": true,
+              "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
+              "name": "POST"
+            },
+            "body": {
+              "formBody": {
+                "overrideContentType": true,
+                "encoding": "application/x-www-form-urlencoded",
+                "items": []
+              },
+              "bodyType": "Text",
+              "textBody": "{\n  \"Name\":\"Misha\",\n  \"Email\":\"Misha@Email.com\",\n  \"Password\":\"BBaa333!\",\n  \"PasswordConfirm\":\"BBaa333!\"\n}"
+            },
+            "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": []
+              },
+              "scheme": {
+                "secure": true,
+                "name": "https",
+                "version": "V11"
+              },
+              "host": "localhost:61772",
+              "path": "/API/Authenticate/SignUp"
+            },
+            "id": "a60a171e-99ab-482e-a4ee-1c5b1e57a092",
+            "name": "AuthSignUp",
+            "headers": [
+              {
+                "enabled": true,
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        },
+        {
+          "entity": {
+            "type": "Request",
+            "method": {
               "requestBody": true,
               "link": "http://tools.ietf.org/html/rfc7231#section-4.3.3",
               "name": "POST"
@@ -35,7 +358,7 @@
                 "name": "https",
                 "version": "V11"
               },
-              "host": "localhost:56430",
+              "host": "localhost:57145",
               "path": "/API/Customers/Create"
             },
             "id": "31399767-b29f-45f9-9bb9-4ec5fa14d852",
@@ -74,7 +397,7 @@
                 "name": "https",
                 "version": "V11"
               },
-              "host": "localhost:56430",
+              "host": "localhost:49155",
               "path": "/API/Customers/GetList/5/70"
             },
             "id": "1ea77e8d-34e6-4523-8710-4e94500c15f2",
@@ -189,7 +512,7 @@
                 "name": "https",
                 "version": "V11"
               },
-              "host": "localhost:56430",
+              "host": "localhost:49802",
               "path": "/API/Goods/GetList/0/10"
             },
             "id": "4d19cd53-1978-457b-9810-5eca0a5a4d1d",
@@ -334,7 +657,7 @@
                 "items": []
               },
               "bodyType": "Text",
-              "textBody": "{\n  \"CustomerId\": 14,\n  \"Comment\":\"test\",\n  \"Goods\" : [\n    {\n\t\t\"GoodId\" : 12,\n  \t\t\"Price\"\t: 1.5,\n  \t\t\"Quantity\":185\n\t},\n    {\n\t\t\"GoodId\" : 6,\n  \t\t\"Price\"\t: 2.0,\n  \t\t\"Quantity\":3\n\t}\n\n  ]\n}"
+              "textBody": "{\n  \"CustomerId\": 3,\n  \"Comment\":\"test\",\n  \"Goods\" : [\n    {\n\t\t\"GoodId\" : 12,\n  \t\t\"Price\"\t: 1.5,\n  \t\t\"Quantity\":185\n\t},\n    {\n\t\t\"GoodId\" : 6,\n  \t\t\"Price\"\t: 2.0,\n  \t\t\"Quantity\":3\n\t}\n\n  ]\n}"
             },
             "uri": {
               "query": {
@@ -346,7 +669,7 @@
                 "name": "https",
                 "version": "V11"
               },
-              "host": "localhost:56430",
+              "host": "localhost:61772",
               "path": "/API/Orders/Create"
             },
             "id": "4bed868a-e9ff-4c9e-bcc6-6102b8c190ca",
@@ -356,6 +679,11 @@
                 "enabled": true,
                 "name": "Content-Type",
                 "value": "application/json"
+              },
+              {
+                "enabled": true,
+                "name": "Cookie",
+                "value": "${getEntityById(\"0abf041c-2963-4562-8f73-84bf8b80df69\").\"response\".\"headers\".\"set-cookie\".substring(\"0\", \"\")}"
               }
             ]
           }
@@ -457,11 +785,17 @@
               "bodyType": "Text"
             },
             "uri": {
+              "query": {
+                "delimiter": "&",
+                "items": []
+              },
               "scheme": {
                 "secure": true,
                 "name": "https",
                 "version": "V11"
-              }
+              },
+              "host": "localhost:56430",
+              "path": "/API/Orders/GetList/0/15"
             },
             "id": "a1bbf647-cfc4-4bdc-9802-bf6c31b7d04b",
             "name": "OrdersGet",
@@ -560,8 +894,8 @@
                 "name": "https",
                 "version": "V11"
               },
-              "host": "localhost:56430",
-              "path": "/API/Values/SeedCustomers/1000"
+              "host": "localhost:61772",
+              "path": "/API/Values/SeedCustomers/100"
             },
             "id": "8018aa7f-6a30-4cb1-bccd-75bcfabfeca7",
             "name": "ValuesSeedCustomers",
@@ -600,7 +934,7 @@
                 "name": "https",
                 "version": "V11"
               },
-              "host": "localhost:56430",
+              "host": "localhost:61772",
               "path": "/API/Values/SeedGoods/100"
             },
             "id": "bc0b3659-9f56-4cda-ac53-f496031903c1",

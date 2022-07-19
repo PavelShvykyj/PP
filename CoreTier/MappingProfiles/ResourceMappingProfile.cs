@@ -21,6 +21,18 @@ namespace CoreTier.MappingProfiles
     {
         public ResourceMappingProfile()
         {
+
+            CreateMap<SignInResource, User>()
+                .ForMember(u => u.Customer, x => x.Ignore())
+                .ForMember(u => u.UserName, r => r.MapFrom(x => x.Name));
+
+            CreateMap<SignInResource, Customer>()
+                .ForMember(c => c.Id, x => x.Ignore());
+                
+
+
+
+
             CreateMap<CustomerResource, Customer>()
                 .ForMember(c => c.Id, x => x.Ignore());
 

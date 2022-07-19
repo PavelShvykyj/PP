@@ -8,5 +8,6 @@ namespace DataTier.Models
         public string Name { get; set; } = null!;
         [EmailAddress]
         public string Email { get; set; } = null!;
+        public User User { get; set; } = null!;
     }
 }

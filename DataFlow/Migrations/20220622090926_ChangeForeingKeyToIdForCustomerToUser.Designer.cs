@@ -4,6 +4,7 @@ using DataTier;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataTier.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20220622090926_ChangeForeingKeyToIdForCustomerToUser")]
+    partial class ChangeForeingKeyToIdForCustomerToUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,10 +27,7 @@ namespace DataTier.Migrations
             modelBuilder.Entity("DataTier.Models.Customer", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -200,9 +199,6 @@ namespace DataTier.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CustomerId")
-                        .IsUnique();
-
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
@@ -347,6 +343,18 @@ namespace DataTier.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("DataTier.Models.Customer", b =>
+                {
+                    b.HasOne("DataTier.Models.User", "User")
+                        .WithOne("Customer")
+                        .HasForeignKey("DataTier.Models.Customer", "Id")
+                        .HasPrincipalKey("DataTier.Models.User", "CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("DataTier.Models.Order", b =>
                 {
                     b.HasOne("DataTier.Models.Customer", "Customer")
@@ -375,17 +383,6 @@ namespace DataTier.Migrations
                     b.Navigation("Good");
 
                     b.Navigation("Order");
-                });
-
-            modelBuilder.Entity("DataTier.Models.User", b =>
-                {
-                    b.HasOne("DataTier.Models.Customer", "Customer")
-                        .WithOne("User")
-                        .HasForeignKey("DataTier.Models.User", "CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Customer");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -439,15 +436,15 @@ namespace DataTier.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("DataTier.Models.Customer", b =>
-                {
-                    b.Navigation("User")
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("DataTier.Models.Order", b =>
                 {
                     b.Navigation("Goods");
+                });
+
+            modelBuilder.Entity("DataTier.Models.User", b =>
+                {
+                    b.Navigation("Customer")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

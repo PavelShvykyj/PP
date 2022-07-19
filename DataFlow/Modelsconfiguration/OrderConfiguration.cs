@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using DataTier.Models;
 
-namespace DataTier.Modelsconfiguration
+namespace DataTier.ModelsConfiguration
 {
     public class OrderConfiguration : IEntityTypeConfiguration<Order>
     {
@@ -14,14 +14,9 @@ namespace DataTier.Modelsconfiguration
                 .HasKey(o => o.Id)
                 .IsClustered();
 
-            //builder
-            //    .Property(o => o.Id)
-            //    .HasDefaultValueSql("GETDATE()");
-
             builder
                 .HasIndex(o => o.CustomerId)
                 .IncludeProperties(new[] { "Id", "Summ" } );
-
 
             builder
                 .HasOne(o => o.Customer)
@@ -33,15 +28,12 @@ namespace DataTier.Modelsconfiguration
                 .Property(o => o.Summ)
                 .HasColumnType("decimal(15,4)")
                 .HasDefaultValue(0);
-            // ??? .HasValueGenerator();
-
 
             builder
                 .HasMany(o => o.Goods)
                 .WithOne(r => r.Order)
                 .HasForeignKey(r=>r.OrderId)
                 .OnDelete(DeleteBehavior.Cascade);
-
         }
     }
 }
