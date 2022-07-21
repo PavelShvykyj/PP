@@ -13,11 +13,11 @@ namespace PP.Controllers
     {
         private readonly IOrderService _dataService;
         private readonly IAuthorizationService _authorizationService;
-        private readonly PaymentSevice _paymentSevice;
+        private readonly IPayService _paymentSevice;
 
         public OrdersController(IDataService dataService,
                                 IAuthorizationService authorizationService,
-                                PaymentSevice paymentSevice)
+                                IPayService paymentSevice)
         {
             _dataService = dataService.OrderService;
             _authorizationService = authorizationService;
@@ -104,24 +104,29 @@ namespace PP.Controllers
         [HttpGet]
         public IActionResult TestPay()
         {
-            string sucsessURL = HttpContext.Request.Host + Url.Action(
-                       "SucsessPay",
-                       "Orders");
 
-            string cancelURL = HttpContext.Request.Host+Url.Action(
-                       "CancelPay",
-                       "Orders");
+            return Ok("Sucsess TestPay");
 
-            string sessionURL = _paymentSevice.CreateSession(sucsessURL, cancelURL);
-            Response.Headers.Add("Location", sessionURL);
-            return new StatusCodeResult(303);
+            //string sucsessURL = HttpContext.Request.Host + Url.Action(
+            //           "SucsessPay",
+            //           "Orders");
+
+            //string cancelURL = HttpContext.Request.Host+Url.Action(
+            //           "CancelPay",
+            //           "Orders");
+
+            //string sessionURL = _paymentSevice.CreateSession(sucsessURL, cancelURL);
+            //Response.Headers.Add("Location", sessionURL);
+            //return new StatusCodeResult(303);
 
         }
 
         public IActionResult SucsessPay()
         {
-            _paymentSevice.RefreshSession();
-            return Ok("Sucsess pay "+ _paymentSevice._session.PaymentIntent.Status);
+            return Ok("Sucsess pay");
+
+            //_paymentSevice.RefreshSession();
+            //return Ok("Sucsess pay "+ _paymentSevice._session.PaymentIntent.Status);
         }
 
         public IActionResult CancelPay()

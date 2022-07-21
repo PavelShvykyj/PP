@@ -26,8 +26,16 @@ namespace Repository
         {
            return _db.OrderPaymentProceses.Include(p => p.Order)
                                           .SingleOrDefault(p => p.OrderId == Orderid);
-        
         }
+
+        public OrderPaymentDitail? GetPaymentDitail(int Orderid)
+        {
+
+            return _db.OrderPaymentDetails.Include(p => p.Order)
+                                          .SingleOrDefault(p => p.OrderId == Orderid);
+        }
+
+
         public List<OrdersListDTO> GetOrdersShortList(int take, int skip) 
         {
             return _db.Orders.Include(o => o.Customer)
@@ -50,5 +58,6 @@ namespace Repository
         public void AddGoods(OrderRows[] orderGoods) {
             _db.OrderRows.AddRange(orderGoods);
         }
+
     }
 }

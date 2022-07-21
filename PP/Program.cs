@@ -24,7 +24,7 @@ var builder = WebApplication.CreateBuilder(args);
 string connection = builder.Configuration.GetConnectionString("DefaultConnection");
 Console.WriteLine(connection);
 
-StripeConfiguration.ApiKey = "sk_test_51LGJFKEtZ7W4kkF59D9t3bLNhlPcwQnSVMDD6yXAM7gaaGOkQgSieNBed5MB8qGBjbm14HccLtMJx5olTYsnVPl5003PTHDxkj";
+StripeConfiguration.ApiKey = builder.Configuration["Stripe:ClientSecret"];
 
 
 builder.Services.AddControllers()
@@ -85,7 +85,7 @@ builder.Services.AddScoped<IDataService,DataManager>();
 builder.Services.AddScoped<IIdentityService,IdentityService>();
 builder.Services.AddHostedService<IdentityHostedService>();
 builder.Services.AddTransient<IAuthorizationHandler, OwnOrdersHandler>();
-builder.Services.AddSingleton<PaymentSevice>();
+builder.Services.AddScoped<IPayService,StripePayService>();
 
 builder.Services.AddAuthorization(options =>
 {

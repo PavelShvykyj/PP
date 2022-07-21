@@ -13,6 +13,10 @@ namespace Repository
         public IGoodRepository Goods { get; private set; }
         public ICustomerRepository Customers { get; private set; }
         public IOrderRepositoty Orders { get; private set; }
+        public IOrderPaymentDitailRepository OrderPaymentDitails { get; private set; }
+        public IOrderPaymentProcesRepository OrderPaymentProcess { get; private set; }
+
+
         private readonly ApplicationContext _context; 
         public UnitOfWork(ApplicationContext context)
         {
@@ -20,6 +24,8 @@ namespace Repository
             Goods = new GoodRepository(_context);
             Customers = new CustomerRepository(_context);
             Orders = new OrderRepository(_context);
+            OrderPaymentDitails = new OrderPaymentDetailRepository(_context);
+            OrderPaymentProcess = new OrderPaymentProcesRepository(_context);
         }
         public void Dispose()
         {
