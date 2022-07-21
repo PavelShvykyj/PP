@@ -3,6 +3,7 @@ using DTO.APIResourses;
 using DTO.DTO;
 using CoreTier.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using CoreTier.Services;
 
 namespace PP.Controllers
 {
@@ -12,11 +13,15 @@ namespace PP.Controllers
     {
         private readonly IOrderService _dataService;
         private readonly IAuthorizationService _authorizationService;
+        private readonly PaymentSevice _paymentSevice;
 
-        public OrdersController(IDataService dataService, IAuthorizationService authorizationService)
+        public OrdersController(IDataService dataService,
+                                IAuthorizationService authorizationService,
+                                PaymentSevice paymentSevice)
         {
             _dataService = dataService.OrderService;
             _authorizationService = authorizationService;
+            _paymentSevice = paymentSevice;    
         }
 
         [Authorize(Policy = "OnlyAuthenticated")]
@@ -95,5 +100,35 @@ namespace PP.Controllers
         {
             return Ok();
         }
+        
+        [HttpGet]
+        public IActionResult TestPay()
+        {
+            string sucsessURL = HttpContext.Request.Host + Url.Action(
+                       "SucsessPay",
+                       "Orders");
+
+            string cancelURL = HttpContext.Request.Host+Url.Action(
+                       "CancelPay",
+                       "Orders");
+
+            string sessionURL = _paymentSevice.CreateSession(sucsessURL, cancelURL);
+            Response.Headers.Add("Location", sessionURL);
+            return new StatusCodeResult(303);
+
+        }
+
+        public IActionResult SucsessPay()
+        {
+            _paymentSevice.RefreshSession();
+            return Ok("Sucsess pay "+ _paymentSevice._session.PaymentIntent.Status);
+        }
+
+        public IActionResult CancelPay()
+        {
+            return Ok("Cancel pey");
+        }
+
+
     }
 }

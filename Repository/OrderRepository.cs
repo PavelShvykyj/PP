@@ -22,6 +22,12 @@ namespace Repository
         {
 
         }
+        public OrderPaymentProces? GetPaymentProces(int Orderid) 
+        {
+           return _db.OrderPaymentProceses.Include(p => p.Order)
+                                          .SingleOrDefault(p => p.OrderId == Orderid);
+        
+        }
         public List<OrdersListDTO> GetOrdersShortList(int take, int skip) 
         {
             return _db.Orders.Include(o => o.Customer)

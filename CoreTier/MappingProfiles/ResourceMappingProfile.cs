@@ -107,8 +107,6 @@ namespace CoreTier.MappingProfiles
                                 uRow.Price = resRow.Price;
                             }
                         }
-
-
                     }
                     if (toAdd.Count() != 0)
                     {
