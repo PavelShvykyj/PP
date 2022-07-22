@@ -10,5 +10,6 @@ namespace Repository.Interfaces
     public interface IOrderPaymentProcesRepository : IRepository<OrderPaymentProces>
     {
         void Remove(int id);
+        void Remove(OrderPaymentProces process);
     }
 }

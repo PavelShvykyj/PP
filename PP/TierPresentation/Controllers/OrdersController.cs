@@ -88,7 +88,7 @@ namespace PP.Controllers
         [Authorize(Policy = "OnlyAuthenticated")]
         [HttpPost]
         [Route("{Id:int}")]
-        public IActionResult Pay()
+        public IActionResult Pay(int Id)
         {
             return Ok();
         }
@@ -96,9 +96,17 @@ namespace PP.Controllers
         [Authorize(Policy = "OnlyAuthenticated")]
         [HttpPost]
         [Route("{Id:int}")]
-        public IActionResult Cancel()
+        public IActionResult Cancel(int Id)
         {
-            return Ok();
+            if (_paymentSevice.CanPay(Id))
+            {
+                _paymentSevice.StartPay(Id);
+                return Ok();
+            }
+            else 
+            {
+                return BadRequest("Order cant be payed");
+            } 
         }
         
         [HttpGet]
@@ -120,17 +128,20 @@ namespace PP.Controllers
             //return new StatusCodeResult(303);
 
         }
-
-        public IActionResult SucsessPay()
+        
+        [Route("{Id:int}")]
+        public IActionResult SucsessPay(int Id)
         {
+            // check if request from  stripe service
+            _paymentSevice.PayFinishSuccess(Id);
             return Ok("Sucsess pay");
-
-            //_paymentSevice.RefreshSession();
-            //return Ok("Sucsess pay "+ _paymentSevice._session.PaymentIntent.Status);
         }
-
-        public IActionResult CancelPay()
+        
+        [Route("{Id:int}")]
+        public IActionResult CancelPay(int Id)
         {
+            // check if request from  stripe service
+            _paymentSevice.PayFinishFail(Id);
             return Ok("Cancel pey");
         }
 

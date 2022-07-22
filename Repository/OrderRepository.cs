@@ -25,6 +25,10 @@ namespace Repository
         public OrderPaymentProces? GetPaymentProces(int Orderid) 
         {
            return _db.OrderPaymentProceses.Include(p => p.Order)
+                                          .ThenInclude(o => o.Goods)
+                                          //.ThenInclude(o => o.Goods.Select(r => new {OrderId = r.OrderId , Summ = r.Summ })
+                                          //                       .GroupBy(r => r.OrderId)
+                                          //                       .Select(g => new {Summ = g.Sum(e => e.Summ)}))
                                           .SingleOrDefault(p => p.OrderId == Orderid);
         }
 

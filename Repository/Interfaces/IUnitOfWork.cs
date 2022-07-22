@@ -11,6 +11,8 @@ namespace Repository.Interfaces
         IGoodRepository Goods { get;  }
         ICustomerRepository Customers { get; }
         IOrderRepositoty Orders { get; }
+        IOrderPaymentDitailRepository OrderPaymentDitails { get; }
+        IOrderPaymentProcesRepository OrderPaymentProcess { get; }
         Task<int> SaveAsync();
     }
 }

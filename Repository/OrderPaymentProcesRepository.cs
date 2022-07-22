@@ -27,5 +27,9 @@ namespace Repository
                 _db.OrderPaymentProceses.Remove(process);
             }
         }
+
+        public void Remove(OrderPaymentProces process) {
+            _db.OrderPaymentProceses.Remove(process);
+        }
     }
 }

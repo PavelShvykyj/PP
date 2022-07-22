@@ -13,5 +13,6 @@ namespace DTO.DTO
         public OrderDTO Order { get; set; }
         public string ExternalId { get; set; }
         public string ExternalName { get; set; }
+        public DateTime Expired { get; set; }
     }
 }

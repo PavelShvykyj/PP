@@ -11,9 +11,9 @@ namespace CoreTier.Interfaces
         /// <summary>
         ///  Id - id of order to be payed
         /// </summary>
-        bool CanPay(string Id);
-        void StartPay(string Id);
-        void PayFinishSuccess(string Id);
-        void PayFinishFail(string Id);
+        bool CanPay(int Id);
+        void StartPay(int Id);
+        void PayFinishSuccess(int Id);
+        void PayFinishFail(int Id);
     }
 }
