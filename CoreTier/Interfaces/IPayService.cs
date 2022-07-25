@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 
 namespace CoreTier.Interfaces
 {
-
-
     public interface IPayService
     {
         /// <summary>

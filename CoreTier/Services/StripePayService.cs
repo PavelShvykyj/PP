@@ -19,7 +19,6 @@ namespace CoreTier.Services
         public const string Processing = "processing";
 
     }
-
     public class StripePayService : IPayService
     {
         private readonly IMapper _mapper;
@@ -32,7 +31,6 @@ namespace CoreTier.Services
             this._mapper = mapper;
             this._unitOfWork = unitOfWork;
         }
-
         private async Task<OrderPaymentProces?> UpdateProcess(int Id) 
         {
             var process = _unitOfWork.Orders.GetPaymentProces(Id);
@@ -50,19 +48,14 @@ namespace CoreTier.Services
                 case PaymentStatus.Success:
                     // cant pay delete process, add detail
                     await PayFinishSuccess(process);
-                    return process;
                     break;
-
                 case PaymentStatus.Canceled:
                     // can pay delete process
                     _unitOfWork.OrderPaymentProcess.Remove(process);
                     await _unitOfWork.SaveAsync();
                     return null;
-                    break;
-
                 case PaymentStatus.Processing:
                     // cant pay nothing to do
-                    return process;
                     break;
                 default:
                     if (DateTime.Compare(process.Expired, DateTime.Now) <= 0)
@@ -72,11 +65,10 @@ namespace CoreTier.Services
                         await _unitOfWork.SaveAsync();
                         return null;
                     }
-                    return process;
                     break;
             }
+            return process;
         }
-
         private Session GetSession(string Id)
         {
             var options = new SessionGetOptions();
@@ -84,7 +76,6 @@ namespace CoreTier.Services
             var service = new SessionService();
             return service.Get(Id, options);
         }
-
         public async Task<bool> CanPayAsync(int Id)
         {
             var process = await UpdateProcess(Id); 
@@ -96,7 +87,6 @@ namespace CoreTier.Services
             var detail = _unitOfWork.Orders.GetPaymentDitail(Id);
             return detail is null;
         }
-
         public async Task PayFinishFailAsync(int Id)
         {
             /// may be add fail last error in process
@@ -106,7 +96,6 @@ namespace CoreTier.Services
                await PayFinishFail(process);
             }
         }
-
         public async Task PayFinishFail(OrderPaymentProces process)
         {
             /// may be add fail last error in process instead of deleting
@@ -114,7 +103,6 @@ namespace CoreTier.Services
             await _unitOfWork.SaveAsync();
 
         }
-
         public async Task PayFinishSuccessAsync(int Id)
         {
             var process = _unitOfWork.Orders.GetPaymentProces(Id);
@@ -123,7 +111,6 @@ namespace CoreTier.Services
                await PayFinishSuccess(process);
             }
         }
-
         public async Task PayFinishSuccess(OrderPaymentProces process) 
         {
             var paymentDetail = new OrderPaymentDitail()
@@ -138,16 +125,11 @@ namespace CoreTier.Services
                                   .Select(g => new { Summ = g.Sum(e => e.Summ) })
                                   .SingleOrDefault()
                                   .Summ
-
-
             };
-
             _unitOfWork.OrderPaymentDitails.Create(paymentDetail);
             _unitOfWork.OrderPaymentProcess.Remove(process);
             await _unitOfWork.SaveAsync();
         }
-
-
         public async Task<string> StartPayAsync(int Id, string CancelUrl, string SuccessUrl)
         {
             var ServiceUrl = "";
@@ -179,7 +161,6 @@ namespace CoreTier.Services
                     });
             }
 
- 
             var options = new SessionCreateOptions()
             {
                 LineItems = LineItems,
