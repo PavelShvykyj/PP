@@ -33,10 +33,10 @@ namespace CoreTier.Services
             this._unitOfWork = unitOfWork;
         }
 
-        private void UpdateProcess(ref OrderPaymentProces? process) 
+        private async Task<OrderPaymentProces?> UpdateProcess(int Id) 
         {
-
-            if (process == null) return;
+            var process = _unitOfWork.Orders.GetPaymentProces(Id);
+            if (process == null) return process;
             
             var session = GetSession(process.ExternalId);
             if (DateTime.Compare(session.ExpiresAt,process.Expired) !=0) 
@@ -49,27 +49,30 @@ namespace CoreTier.Services
             {
                 case PaymentStatus.Success:
                     // cant pay delete process, add detail
-                    PayFinishSuccess(process);
+                    await PayFinishSuccess(process);
+                    return process;
                     break;
 
                 case PaymentStatus.Canceled:
                     // can pay delete process
                     _unitOfWork.OrderPaymentProcess.Remove(process);
-                    _unitOfWork.SaveAsync();
-                    process = null;
+                    await _unitOfWork.SaveAsync();
+                    return null;
                     break;
 
                 case PaymentStatus.Processing:
                     // cant pay nothing to do
+                    return process;
                     break;
                 default:
                     if (DateTime.Compare(process.Expired, DateTime.Now) <= 0)
                     {
                         // can pay delete process
                         _unitOfWork.OrderPaymentProcess.Remove(process);
-                        _unitOfWork.SaveAsync();
-                        process = null;
+                        await _unitOfWork.SaveAsync();
+                        return null;
                     }
+                    return process;
                     break;
             }
         }
@@ -82,10 +85,10 @@ namespace CoreTier.Services
             return service.Get(Id, options);
         }
 
-        public bool CanPay(int Id)
+        public async Task<bool> CanPayAsync(int Id)
         {
-            var process = _unitOfWork.Orders.GetPaymentProces(Id);
-            UpdateProcess(ref process);
+            var process = await UpdateProcess(Id); 
+            
             if (process is not null)
             {
                 return false;
@@ -94,37 +97,39 @@ namespace CoreTier.Services
             return detail is null;
         }
 
-        public void PayFinishFail(int Id)
+        public async Task PayFinishFailAsync(int Id)
         {
             /// may be add fail last error in process
             var process = _unitOfWork.Orders.GetPaymentProces(Id);
             if (process is not null)
             {
-                PayFinishFail(process);
+               await PayFinishFail(process);
             }
         }
 
-        public void PayFinishFail(OrderPaymentProces process)
+        public async Task PayFinishFail(OrderPaymentProces process)
         {
             /// may be add fail last error in process instead of deleting
             _unitOfWork.OrderPaymentProcess.Remove(process);
-            _unitOfWork.SaveAsync();
+            await _unitOfWork.SaveAsync();
 
         }
 
-        public void PayFinishSuccess(int Id)
+        public async Task PayFinishSuccessAsync(int Id)
         {
             var process = _unitOfWork.Orders.GetPaymentProces(Id);
             if (process is not null) 
             {
-                PayFinishSuccess(process);
+               await PayFinishSuccess(process);
             }
         }
 
-        public void PayFinishSuccess(OrderPaymentProces process) 
+        public async Task PayFinishSuccess(OrderPaymentProces process) 
         {
             var paymentDetail = new OrderPaymentDitail()
             {
+                CartNubmer = "",
+                CartType = "",
                 Order = process.Order,
                 OrderId = process.OrderId,
                 ExternalID = process.ExternalId,
@@ -139,17 +144,18 @@ namespace CoreTier.Services
 
             _unitOfWork.OrderPaymentDitails.Create(paymentDetail);
             _unitOfWork.OrderPaymentProcess.Remove(process);
-            _unitOfWork.SaveAsync();
+            await _unitOfWork.SaveAsync();
         }
 
 
-        public void StartPay(int Id)
+        public async Task<string> StartPayAsync(int Id, string CancelUrl, string SuccessUrl)
         {
+            var ServiceUrl = "";
             /// Get oreder with properties
             var order = _unitOfWork.Orders.GetOrderWithProperties(Id);
             if (order is null)
             {
-                return;
+                return ServiceUrl;
             }
             
             /// Create Stripe session on order data
@@ -173,10 +179,7 @@ namespace CoreTier.Services
                     });
             }
 
-            ///// ???????????????????????????????
-            var cancelURL  = "";
-            var sucsessURL = "";
-
+ 
             var options = new SessionCreateOptions()
             {
                 LineItems = LineItems,
@@ -184,8 +187,8 @@ namespace CoreTier.Services
                 CustomerEmail = order.Customer.Email,
                 ExpiresAt = DateTime.Now.AddHours(2),
                 Locale = "en",
-                CancelUrl = "https://" + cancelURL,
-                SuccessUrl = "https://" + sucsessURL,
+                CancelUrl = "https://" + CancelUrl,
+                SuccessUrl = "https://" + SuccessUrl,
                 Expand = new List<string> { "payment_intent" },
                 Metadata = new Dictionary<string, string>() { { "OrderID", Id.ToString() } }
             };
@@ -201,10 +204,9 @@ namespace CoreTier.Services
                 ExternalName = "Stripe"
             };
             _unitOfWork.OrderPaymentProcess.Create(process);
-            _unitOfWork.SaveAsync();
-
-            ///// ???????????????????????????????
-            //return session.Url;
+            await _unitOfWork.SaveAsync();
+            ServiceUrl = session.Url;
+            return ServiceUrl;
         }
     }
 }

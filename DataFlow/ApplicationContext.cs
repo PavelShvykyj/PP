@@ -24,8 +24,8 @@ namespace DataTier
         }
 
         protected  override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
-            //optionsBuilder.UseSqlServer("Server=db;Database=PetProj;User Id=sa;Password=Mylocalhost88!;MultipleActiveResultSets=true");
-            optionsBuilder.UseSqlServer("Server=localhost\\SQLEXPRESS;Database=PetProj;User Id=sa;Password=123;MultipleActiveResultSets=true");
+            optionsBuilder.UseSqlServer("Server=db;Database=PetProj;User Id=sa;Password=Mylocalhost88!;MultipleActiveResultSets=true");
+            //optionsBuilder.UseSqlServer("Server=localhost\\SQLEXPRESS;Database=PetProj;User Id=sa;Password=123;MultipleActiveResultSets=true");
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             modelBuilder.ApplyConfiguration(new GoodConfiguration());

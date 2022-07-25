@@ -6,14 +6,16 @@ using System.Threading.Tasks;
 
 namespace CoreTier.Interfaces
 {
+
+
     public interface IPayService
     {
         /// <summary>
         ///  Id - id of order to be payed
         /// </summary>
-        bool CanPay(int Id);
-        void StartPay(int Id);
-        void PayFinishSuccess(int Id);
-        void PayFinishFail(int Id);
+        Task<bool> CanPayAsync(int Id);
+        Task<string> StartPayAsync(int Id, string CancelUrl, string SuccessUrl);
+        Task PayFinishSuccessAsync(int Id);
+        Task PayFinishFailAsync(int Id);
     }
 }
