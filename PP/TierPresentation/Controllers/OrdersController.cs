@@ -3,6 +3,7 @@ using DTO.APIResourses;
 using DTO.DTO;
 using CoreTier.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using CoreTier.Services;
 
 namespace PP.Controllers
 {
@@ -12,11 +13,15 @@ namespace PP.Controllers
     {
         private readonly IOrderService _dataService;
         private readonly IAuthorizationService _authorizationService;
+        private readonly IPayService _paymentSevice;
 
-        public OrdersController(IDataService dataService, IAuthorizationService authorizationService)
+        public OrdersController(IDataService dataService,
+                                IAuthorizationService authorizationService,
+                                IPayService paymentSevice)
         {
             _dataService = dataService.OrderService;
             _authorizationService = authorizationService;
+            _paymentSevice = paymentSevice;    
         }
 
         [Authorize(Policy = "OnlyAuthenticated")]
@@ -83,17 +88,66 @@ namespace PP.Controllers
         [Authorize(Policy = "OnlyAuthenticated")]
         [HttpPost]
         [Route("{Id:int}")]
-        public IActionResult Pay()
+        public async Task<IActionResult> Pay(int Id)
         {
-            return Ok();
+            string sucsessURL = HttpContext.Request.Host + "/API/Orders/SucsessPay/" + Id.ToString();
+            //Url.Action(
+            //           "SucsessPay",
+            //           "Orders") + ;
+
+            string cancelURL = HttpContext.Request.Host + "/API/Orders/CancelPay/" + Id.ToString();
+
+            //HttpContext.Request.Host + Url.Action(
+            //           "CancelPay",
+            //           "Orders") + Id.ToString();
+
+           
+            var canPay = await _paymentSevice.CanPayAsync(Id);
+
+            if (canPay)
+            {
+                string serviceUrl = await _paymentSevice.StartPayAsync(Id, cancelURL, sucsessURL );
+                if (serviceUrl.Length != 0)
+                {
+                    Response.Headers.Add("Location", serviceUrl);
+                    return new StatusCodeResult(303);
+
+                }
+                else 
+                {
+                    return BadRequest("Order cant be payed");
+                }
+
+            }
+            else
+            {
+                return BadRequest("Order cant be payed");
+            }
+
         }
 
         [Authorize(Policy = "OnlyAuthenticated")]
         [HttpPost]
         [Route("{Id:int}")]
-        public IActionResult Cancel()
+        public IActionResult Cancel(int Id)
         {
             return Ok();
+        }
+                
+        [Route("{Id:int}")]
+        public async Task<IActionResult> SucsessPay(int Id)
+        {
+            // check if request from  stripe service
+            await _paymentSevice.PayFinishSuccessAsync(Id);
+            return Ok("Sucsess pay");
+        }
+        
+        [Route("{Id:int}")]
+        public IActionResult CancelPay(int Id)
+        {
+            // check if request from  stripe service
+            _paymentSevice.PayFinishFailAsync(Id);
+            return Ok("Cancel pey");
         }
     }
 }

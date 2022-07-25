@@ -16,6 +16,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using PP.Extentions;
+using Stripe;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,7 +26,6 @@ Console.WriteLine(connection);
 
 builder.Services.AddControllers()
                 .AddNewtonsoftJson();
-
 builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connection));
 builder.Services.AddAutoMapper(new[] { typeof(DTOMappingProfile), typeof(ResourceMappingProfile) } );
 
@@ -74,12 +75,15 @@ builder.Services.AddEmailSevice(options => {
     options.SMTPPort = 465;
     options.Login = builder.Configuration["Email:Address"]; 
 }); 
-
 builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
 builder.Services.AddScoped<IDataService,DataManager>();
 builder.Services.AddScoped<IIdentityService,IdentityService>();
 builder.Services.AddHostedService<IdentityHostedService>();
 builder.Services.AddTransient<IAuthorizationHandler, OwnOrdersHandler>();
+
+StripeConfiguration.ApiKey = builder.Configuration["Stripe:ClientSecret"];
+builder.Services.AddScoped<IPayService,StripePayService>();
+
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("OnlyAdmin", policy =>
@@ -103,8 +107,6 @@ builder.Services.AddAuthorization(options =>
     });
 
 });
-
-
 builder.Services.AddSingleton<ActionsResultFake>();
 
 

@@ -11,6 +11,8 @@ namespace CoreTier.MappingProfiles
             CreateMap<Customer, CustomerDTO>();
             CreateMap<Good, GoodDTO>();
             CreateMap<OrderRows, OrderRowsDTO>();
+            CreateMap<OrderPaymentProces, OrderPaymentProcesDTO>();
+            CreateMap<OrderPaymentDitail, OrderPaymentDitailDTO>();
 
 
             CreateMap<Order, OrderDTO>()
